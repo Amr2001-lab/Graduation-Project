@@ -34,10 +34,44 @@
           <li><a href="/sell">Sell</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
+        <ul class="nav-right">
+          @auth
+            <li>
+              <a href="{{ route('estimate') }}" class="nav-btn">
+                Estimate Property
+              </a>
+            </li>
+            <li class="user-dropdown">
+              <span class="welcome-msg">
+                Welcome, {{ Auth::user()->name }}
+                <i class="fas fa-caret-down"></i>
+              </span>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="{{ route('profile.show') }}" class="nav-btn">
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <form action="{{ route('logout') }}" method="POST" class="logout-form">
+                    @csrf
+                    <button type="submit" class="nav-btn">Logout</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          @else
+            <li>
+              <a href="{{ route('login.show') }}" class="nav-btn">Login</a>
+            </li>
+            <li>
+              <a href="{{ route('register.show') }}" class="nav-btn">Register</a>
+            </li>
+          @endauth
+        </ul>
       </nav>
     </div>
   </header>
-  
 
   @php
     $imageUrl = $property->image_url ? asset('storage/Images/' . $property->image_url) : 'https://via.placeholder.com/400x300.png?text=No+Image';
@@ -54,21 +88,23 @@
 
   <!-- Property Details Section -->
   <main class="container" style="padding: 40px 0;">
-    <div class="property-details">
-      <img src="{{ $imageUrl }}" alt="Property Image" style="width:100%; max-height:400px; object-fit: cover; border-radius: 8px; margin-bottom:20px;">
-      <h2>Details for {{ $property->city }} Apartment</h2>
-      <p class="price" style="font-size: 1.5rem; font-weight: bold;">
-        ${{ number_format($property->price, 2) }}
-      </p>
-      <ul>
-        <li><strong>Size:</strong> {{ $property->size }} sq ft</li>
-        <li><strong>Address:</strong> {{ $property->street }}</li>
-        <li><strong>Age:</strong> {{ $property->age }} years</li>
-        <li><strong>Rooms:</strong> {{ $property->rooms }}</li>
-        <li><strong>Bathrooms:</strong> {{ $property->bathrooms }}</li>
-        <li><strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}</li>
-      </ul>
-      <a href="{{ route('property.compare', $property->id) }}" class="btn">Compare</a>
+    <div id="compare-secondary-content">
+      <div class="property-details">
+        <img src="{{ $imageUrl }}" alt="Property Image" style="width:100%; max-height:400px; object-fit: cover; border-radius: 8px; margin-bottom:20px;">
+        <h2>Details for {{ $property->city }} Apartment</h2>
+        <p class="price" style="font-size: 1.5rem; font-weight: bold;">
+          ${{ number_format($property->price, 2) }}
+        </p>
+        <ul>
+          <li><strong>Size:</strong> {{ $property->size }} sq ft</li>
+          <li><strong>Address:</strong> {{ $property->street }}</li>
+          <li><strong>Age:</strong> {{ $property->age }} years</li>
+          <li><strong>Rooms:</strong> {{ $property->rooms }}</li>
+          <li><strong>Bathrooms:</strong> {{ $property->bathrooms }}</li>
+          <li><strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}</li>
+        </ul>
+        <a href="{{ route('property.compare', $property->id) }}" class="btn">Compare</a>
+      </div>
     </div>
   </main>
 

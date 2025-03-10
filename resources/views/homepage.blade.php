@@ -177,7 +177,7 @@
               <div class="card-actions" style="margin-top: 10px; text-align: center;">
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
                 @auth
-                  <form action="{{ route('bookmark.store') }}" method="POST" style="display: inline-block;">
+                  <form action="{{ route('bookmark.store') }}" method="POST" class="bookmark-form" style="display: inline-block;">
                     @csrf
                     <input type="hidden" name="apartment_id" value="{{ $variable->id }}">
                     <button type="submit" class="btn">Bookmark</button>

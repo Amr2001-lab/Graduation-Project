@@ -97,15 +97,14 @@
         <p>You haven't bookmarked any properties yet.</p>
       @else
         <div class="grid">
-          @foreach($bookmarks as $index => $bookmark)
+          @foreach($bookmarks as $bookmark)
             <div class="card">
-              <!-- Use the same propertyImages array logic from the homepage -->
-              <img src="{{ $propertyImages[$index % count($propertyImages)] }}" alt="Property Image">
+              <img src="{{ $bookmark->apartment->image_url 
+                ? asset('storage/Images/' . $bookmark->apartment->image_url) 
+                : 'https://via.placeholder.com/400x250.png?text=No+Image' }}" alt="Property Image">
               <div class="card-content">
                 <h3>{{ $bookmark->apartment->city }} Apartment</h3>
-                <p class="price">
-                  ${{ number_format($bookmark->apartment->price, 2) }}
-                </p>
+                <p class="price">${{ number_format($bookmark->apartment->price, 2) }}</p>
                 <ul>
                   <li><strong>Size:</strong> {{ $bookmark->apartment->size }} sq ft</li>
                   <li><strong>Address:</strong> {{ $bookmark->apartment->street }}</li>
@@ -118,6 +117,7 @@
       @endif
     </section>
     
+    
     <!-- Listed Properties Section -->
     <section class="listed-properties">
       <h2>My Listed Properties</h2>
@@ -125,18 +125,14 @@
         <p>You haven't listed any properties yet.</p>
       @else
         <div class="grid">
-          @foreach($properties as $index => $property)
+          @foreach($properties as $property)
             <div class="card">
-              <!-- Same approach for the user's listed properties -->
-              <img
-                src="{{ $propertyImages[$index % count($propertyImages)] }}"
-                alt="Property Image"
-              >
+              <img src="{{ $property->image_url 
+                ? asset('storage/Images/' . $property->image_url) 
+                : 'https://via.placeholder.com/400x250.png?text=No+Image' }}" alt="Property Image">
               <div class="card-content">
                 <h3>{{ $property->city }} Apartment</h3>
-                <p class="price">
-                  ${{ number_format($property->price, 2) }}
-                </p>
+                <p class="price">${{ number_format($property->price, 2) }}</p>
                 <ul>
                   <li><strong>Size:</strong> {{ $property->size }} sq ft</li>
                   <li><strong>Address:</strong> {{ $property->street }}</li>
@@ -148,6 +144,7 @@
         </div>
       @endif
     </section>
+    
   </main>
 
   <!-- Footer (reuse from main page) -->

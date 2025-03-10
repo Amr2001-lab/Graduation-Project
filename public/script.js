@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // -------------------------------
-  // Live Search Functionality with AJAX Compare Update
+  // Live Search Functionality with Conditional Behavior
   // -------------------------------
   const searchInput =
     document.getElementById('compare-search-input') || document.getElementById('search-input');
@@ -53,20 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('compare-search-results') || document.getElementById('search-results');
   const searchForm =
     document.getElementById('compare-search-form') || document.getElementById('search-form');
-
-  // Array of property images for thumbnails
-  const propertyImages = [
-    'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1170&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1074&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1558036117-15d82a90b9b1?q=80&w=1170&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1170&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1555636222-cae831e670b3?q=80&w=1177&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1171&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1170&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=1170&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=1170&auto=format&fit=crop'
-  ];
 
   // Variable to store the first suggestion's ID as fallback
   let firstSuggestionId = null;
@@ -94,16 +80,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 const li = document.createElement('li');
                 li.classList.add('compare-search-item');
 
-                // Create thumbnail image using a cyclic array based on apartment.id
                 const thumbnail = document.createElement('img');
-                const index = (apartment.id - 1) % propertyImages.length;
-                thumbnail.src = propertyImages[index];
-                thumbnail.alt = 'Property Thumbnail';
-                thumbnail.style.width = '50px';
-                thumbnail.style.height = '50px';
-                thumbnail.style.objectFit = 'cover';
-                thumbnail.style.marginRight = '10px';
-                thumbnail.style.verticalAlign = 'middle';
+                if (apartment.image_url) {
+                  thumbnail.src = '/storage/Images/' + apartment.image_url;
+                  thumbnail.alt = 'Property Thumbnail';
+                  thumbnail.style.width = '50px';
+                  thumbnail.style.height = '50px';
+                  thumbnail.style.objectFit = 'cover';
+                  thumbnail.style.marginRight = '10px';
+                  thumbnail.style.verticalAlign = 'middle';
+                }
 
                 // Create a text span for the property details
                 const textSpan = document.createElement('span');
@@ -112,24 +98,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 li.appendChild(thumbnail);
                 li.appendChild(textSpan);
 
-                // When clicking on a suggestion, update the "Second Property" column via AJAX
-                li.addEventListener('click', function () {
+                // When clicking on a suggestion, either update the compare table or redirect
+                li.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  e.stopPropagation();
                   console.log('Clicked apartment id:', apartment.id);
-                  fetch('/compare/update/' + apartment.id)
-                    .then(response => response.text())
-                    .then(html => {
-                      const compareSecondaryContent = document.getElementById('compare-secondary-content');
-                      if (compareSecondaryContent) {
-                        compareSecondaryContent.innerHTML = html; 
-                      } else {
-                        console.error('compare-secondary-content element not found');
-                      }
-                      // Clear out the search results dropdown
-                      resultsDiv.innerHTML = '';
-                    })
-                    .catch(error => {
-                      console.error('Error fetching comparison property:', error);
-                    });
+                  const compareSecondaryContent = document.getElementById('compare-secondary-content');
+                  if (compareSecondaryContent) {
+                    // On the comparison page: update the table via AJAX
+                    fetch('/compare/update/' + apartment.id)
+                      .then(response => response.text())
+                      .then(html => {
+                        compareSecondaryContent.innerHTML = html;
+                        resultsDiv.innerHTML = '';
+                      })
+                      .catch(error => {
+                        console.error('Error fetching comparison property:', error);
+                      });
+                  } else {
+                    // On the main page: redirect to the property page
+                    window.location.href = '/property/' + apartment.id;
+                  }
                 });
 
                 ul.appendChild(li);
@@ -137,8 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
               resultsDiv.appendChild(ul);
             } else {
-              resultsDiv.innerHTML =
-                '<p class="compare-no-results" style="padding:8px;">No results found</p>';
+              resultsDiv.innerHTML = '<p class="compare-no-results" style="padding:8px;">No results found</p>';
             }
           })
           .catch(error => console.error('Error fetching search results:', error));
@@ -148,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Listen for form submit: if no suggestion is clicked and the user submits the form,
-    // load the first suggestion via AJAX or fallback to normal search
+    // load the first suggestion via AJAX if on the comparison page; otherwise, redirect.
     if (searchForm) {
       searchForm.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -172,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
               console.error('Error fetching comparison property:', error);
             });
         } else {
-          // If no suggestions or user didn't pick from them, do a normal redirect to /search
+          // If not on the comparison page, do a normal redirect to search results
           window.location.href = '/search/results?q=' + typedQuery;
         }
       });
@@ -186,3 +174,64 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Attach the AJAX submission to all bookmark forms
+  const bookmarkForms = document.querySelectorAll('form.bookmark-form');
+
+  bookmarkForms.forEach(form => {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent the default page reload
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+          'Accept': 'application/json'
+        },
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Show a success notification
+        showBookmarkNotification('Bookmark added successfully!');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showBookmarkNotification('Error adding bookmark.');
+      });
+    });
+  });
+
+  // Function to display a temporary notification
+  function showBookmarkNotification(message) {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    // Simple styling for the notification
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.right = '20px';
+    notification.style.backgroundColor = '#4CAF50';
+    notification.style.color = '#fff';
+    notification.style.padding = '10px 20px';
+    notification.style.borderRadius = '5px';
+    notification.style.zIndex = '1000';
+    document.body.appendChild(notification);
+
+    // Fade out and remove the notification after 2 seconds
+    setTimeout(() => {
+      notification.style.transition = 'opacity 0.5s ease';
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        notification.remove();
+      }, 500);
+    }, 2000);
+  }
+});
+
