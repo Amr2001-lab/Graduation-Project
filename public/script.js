@@ -1,10 +1,17 @@
 console.log('JS file loaded');
 
 document.addEventListener('DOMContentLoaded', function () {
-  // -------------------------------
-  // Modal Functionality for "View Details" buttons
-  // -------------------------------
-  const detailButtons = document.querySelectorAll('.btn');
+  /* -----------------------------------
+     Modal Functionality for "View Details" buttons
+     ----------------------------------- */
+  // Only attach to elements that explicitly need modal behavior.
+  const modalTriggers = document.querySelectorAll('[data-modal]');
+  modalTriggers.forEach(trigger => {
+    trigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      showModal();
+    });
+  });
 
   function showModal() {
     // Create the overlay
@@ -31,28 +38,21 @@ document.addEventListener('DOMContentLoaded', function () {
     modalOverlay.appendChild(modal);
     document.body.appendChild(modalOverlay);
 
-    // Close the modal when clicking the close button
-    closeButton.addEventListener('click', function () {
-      document.body.removeChild(modalOverlay);
-    });
-
-    // Close the modal when clicking outside the modal content
+    // Close the modal when clicking the close button or clicking outside the modal
+    closeButton.addEventListener('click', () => modalOverlay.remove());
     modalOverlay.addEventListener('click', function (e) {
       if (e.target === modalOverlay) {
-        document.body.removeChild(modalOverlay);
+        modalOverlay.remove();
       }
     });
   }
 
-  // -------------------------------
-  // Live Search Functionality with Conditional Behavior
-  // -------------------------------
-  const searchInput =
-    document.getElementById('compare-search-input') || document.getElementById('search-input');
-  const resultsDiv =
-    document.getElementById('compare-search-results') || document.getElementById('search-results');
-  const searchForm =
-    document.getElementById('compare-search-form') || document.getElementById('search-form');
+  /* -----------------------------------
+     Live Search Functionality with Conditional Behavior
+     ----------------------------------- */
+  const searchInput = document.getElementById('compare-search-input') || document.getElementById('search-input');
+  const resultsDiv = document.getElementById('compare-search-results') || document.getElementById('search-results');
+  const searchForm = document.getElementById('compare-search-form') || document.getElementById('search-form');
 
   // Variable to store the first suggestion's ID as fallback
   let firstSuggestionId = null;
@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const li = document.createElement('li');
                 li.classList.add('compare-search-item');
 
+                // Create thumbnail if available
                 const thumbnail = document.createElement('img');
                 if (apartment.image_url) {
                   thumbnail.src = '/storage/Images/' + apartment.image_url;
@@ -160,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
               console.error('Error fetching comparison property:', error);
             });
         } else {
-          // If not on the comparison page, do a normal redirect to search results
+          // If not on the comparison page, perform a normal redirect to search results
           window.location.href = '/search/results?q=' + typedQuery;
         }
       });
@@ -173,16 +174,17 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-});
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Attach the AJAX submission to all bookmark forms
+  /* -----------------------------------
+     Bookmark Functionality with AJAX Submission
+     ----------------------------------- */
   const bookmarkForms = document.querySelectorAll('form.bookmark-form');
 
   bookmarkForms.forEach(form => {
     form.addEventListener('submit', function (e) {
-      e.preventDefault(); // Prevent the default page reload
+      e.preventDefault();
       const formData = new FormData(form);
+      const bookmarkButton = form.querySelector('.bookmark-btn-only');
 
       fetch(form.action, {
         method: 'POST',
@@ -192,28 +194,27 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         body: formData
       })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not OK');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Show a success notification
-        showBookmarkNotification('Bookmark added successfully!');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        showBookmarkNotification('Error adding bookmark.');
-      });
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not OK');
+          return response.json();
+        })
+        .then(data => {
+          // Toggle the button's active state based on whether the bookmark was added
+          bookmarkButton.classList.toggle('active', data.added);
+          const message = data.added ? 'Bookmark added successfully!' : 'Bookmark removed!';
+          showBookmarkNotification(message);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showBookmarkNotification('Error updating bookmark.');
+        });
     });
   });
 
-  // Function to display a temporary notification
   function showBookmarkNotification(message) {
     const notification = document.createElement('div');
     notification.textContent = message;
-    // Simple styling for the notification
+    // Simple notification styling
     notification.style.position = 'fixed';
     notification.style.top = '20px';
     notification.style.right = '20px';
@@ -234,4 +235,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 2000);
   }
 });
-

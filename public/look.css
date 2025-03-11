@@ -660,3 +660,61 @@ footer {
   border-radius: 4px;
   font-size: 1rem;
 }
+
+/* Animated Fill Style with Dark Shaded State */
+.bookmark-btn-only {
+  border: none;
+  background: none;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.bookmark-btn-only svg {
+  width: 28px;
+  height: 28px;
+  fill: transparent;
+  stroke: #666;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.bookmark-btn-only:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(44, 62, 80, 0.1); /* Dark shade background */
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.bookmark-btn-only.active svg {
+  fill: #2c3e50; /* Dark color */
+  stroke: #2c3e50;
+  animation: bounce 0.4s ease;
+}
+
+.bookmark-btn-only.active:before {
+  background: rgba(44, 62, 80, 0.1); /* Dark shade background */
+  transform: scale(1);
+  opacity: 1;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+}
+
+/* Bookmark button active state */
+.bookmark-btn-only.active svg {
+  fill: #2c3e50;
+  stroke: #2c3e50;
+}

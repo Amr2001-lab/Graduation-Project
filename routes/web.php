@@ -21,7 +21,7 @@ Route::get('/search', [SearchController::class, 'search'])->name('search.index')
 
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show')->middleware('auth');
 
-Route::post('/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store')->middleware('auth');
+Route::post('/bookmark', [BookmarkController::class, 'store'])->name('bookmarks.store')->middleware('auth');
 
 Route::get('/properties/create', [PropertyController::class, 'create'])->middleware('auth')->name('property.create');
 Route::post('/properties', [PropertyController::class, 'store'])->middleware('auth')->name('property.store');

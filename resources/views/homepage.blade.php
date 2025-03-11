@@ -177,11 +177,15 @@
               <div class="card-actions" style="margin-top: 10px; text-align: center;">
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
                 @auth
-                  <form action="{{ route('bookmark.store') }}" method="POST" class="bookmark-form" style="display: inline-block;">
+                <form action="{{ route('bookmarks.store') }}" method="POST" class="bookmark-form" style="display: inline-block;">
                     @csrf
                     <input type="hidden" name="apartment_id" value="{{ $variable->id }}">
-                    <button type="submit" class="btn">Bookmark</button>
-                  </form>
+                    <button type="submit" class="bookmark-btn-only @if(auth()->user()->bookmarkedApartments->contains($variable->id)) active @endif">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"></path>
+                        </svg>
+                    </button>
+                </form>
                 @endauth
               </div>
             </div>

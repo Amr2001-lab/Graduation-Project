@@ -26,4 +26,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Apartment::class, 'seller_id');
     }
+
+    public function bookmarkedApartments()
+    {
+        return $this->belongsToMany(Apartment::class, 'bookmarks')->withTimestamps();
+    }
 }
