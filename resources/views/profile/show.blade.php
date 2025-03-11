@@ -68,22 +68,6 @@
 
   <!-- Main Profile Content -->
   <main class="container profile-content" style="padding: 40px 0;">
-    @php
-      // Array of property images (images 2 to 11, matching your homepage logic)
-      $propertyImages = [
-        'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1170&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1074&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1558036117-15d82a90b9b1?q=80&w=1170&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1170&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1555636222-cae831e670b3?q=80&w=1177&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1171&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1170&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=1170&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=1170&auto=format&fit=crop'
-      ];
-    @endphp
-
     <section class="user-details" style="margin-bottom: 40px;">
       <h2>My Profile</h2>
       <p><strong>Name:</strong> {{ $user->name }}</p>
@@ -144,7 +128,6 @@
         </div>
       @endif
     </section>
-    
   </main>
 
   <!-- Footer (reuse from main page) -->

@@ -3,8 +3,7 @@ console.log('JS file loaded');
 document.addEventListener('DOMContentLoaded', function () {
   /* -----------------------------------
      Modal Functionality for "View Details" buttons
-     ----------------------------------- */
-  // Only attach to elements that explicitly need modal behavior.
+  ----------------------------------- */
   const modalTriggers = document.querySelectorAll('[data-modal]');
   modalTriggers.forEach(trigger => {
     trigger.addEventListener('click', function (e) {
@@ -14,31 +13,25 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function showModal() {
-    // Create the overlay
     const modalOverlay = document.createElement('div');
     modalOverlay.classList.add('modal-overlay');
 
-    // Create the modal container
     const modal = document.createElement('div');
     modal.classList.add('modal');
 
-    // Create the close button
     const closeButton = document.createElement('span');
     closeButton.classList.add('modal-close');
     closeButton.innerHTML = '&times;';
     modal.appendChild(closeButton);
 
-    // Create the content of the modal
     const modalContent = document.createElement('div');
     modalContent.classList.add('modal-content');
     modalContent.innerHTML = '<h2>Property Details</h2><p>More details coming soon!</p>';
     modal.appendChild(modalContent);
 
-    // Append modal to overlay and overlay to body
     modalOverlay.appendChild(modal);
     document.body.appendChild(modalOverlay);
 
-    // Close the modal when clicking the close button or clicking outside the modal
     closeButton.addEventListener('click', () => modalOverlay.remove());
     modalOverlay.addEventListener('click', function (e) {
       if (e.target === modalOverlay) {
@@ -49,16 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* -----------------------------------
      Live Search Functionality with Conditional Behavior
-     ----------------------------------- */
+  ----------------------------------- */
   const searchInput = document.getElementById('compare-search-input') || document.getElementById('search-input');
   const resultsDiv = document.getElementById('compare-search-results') || document.getElementById('search-results');
   const searchForm = document.getElementById('compare-search-form') || document.getElementById('search-form');
-
-  // Variable to store the first suggestion's ID as fallback
   let firstSuggestionId = null;
 
   if (searchInput) {
-    // Listen for input changes to perform live search
     searchInput.addEventListener('input', function () {
       const query = this.value.trim();
       console.log('Search input changed:', query);
@@ -68,10 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
           .then(response => response.json())
           .then(data => {
             resultsDiv.innerHTML = '';
-            firstSuggestionId = null; // reset for each new query
+            firstSuggestionId = null;
 
             if (data.length > 0) {
-              // Use the first result as fallback if the user submits the form
               firstSuggestionId = data[0].id;
               const ul = document.createElement('ul');
               ul.classList.add('compare-search-list');
@@ -80,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const li = document.createElement('li');
                 li.classList.add('compare-search-item');
 
-                // Create thumbnail if available
                 const thumbnail = document.createElement('img');
                 if (apartment.image_url) {
                   thumbnail.src = '/storage/Images/' + apartment.image_url;
@@ -92,32 +80,26 @@ document.addEventListener('DOMContentLoaded', function () {
                   thumbnail.style.verticalAlign = 'middle';
                 }
 
-                // Create a text span for the property details
                 const textSpan = document.createElement('span');
                 textSpan.textContent = apartment.street + ' - $' + apartment.price;
 
                 li.appendChild(thumbnail);
                 li.appendChild(textSpan);
 
-                // When clicking on a suggestion, either update the compare table or redirect
                 li.addEventListener('click', function (e) {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('Clicked apartment id:', apartment.id);
                   const compareSecondaryContent = document.getElementById('compare-secondary-content');
                   if (compareSecondaryContent) {
-                    // On the comparison page: update the table via AJAX
                     fetch('/compare/update/' + apartment.id)
                       .then(response => response.text())
                       .then(html => {
                         compareSecondaryContent.innerHTML = html;
                         resultsDiv.innerHTML = '';
                       })
-                      .catch(error => {
-                        console.error('Error fetching comparison property:', error);
-                      });
+                      .catch(error => console.error('Error fetching comparison property:', error));
                   } else {
-                    // On the main page: redirect to the property page
                     window.location.href = '/property/' + apartment.id;
                   }
                 });
@@ -136,8 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Listen for form submit: if no suggestion is clicked and the user submits the form,
-    // load the first suggestion via AJAX if on the comparison page; otherwise, redirect.
     if (searchForm) {
       searchForm.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -148,26 +128,20 @@ document.addEventListener('DOMContentLoaded', function () {
           console.log('Submitting form with first suggestion id:', firstSuggestionId);
           fetch('/compare/update/' + firstSuggestionId)
             .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not OK');
-              }
+              if (!response.ok) throw new Error('Network response was not OK');
               return response.text();
             })
             .then(html => {
               compareSecondaryContent.innerHTML = html;
               resultsDiv.innerHTML = '';
             })
-            .catch(error => {
-              console.error('Error fetching comparison property:', error);
-            });
+            .catch(error => console.error('Error fetching comparison property:', error));
         } else {
-          // If not on the comparison page, perform a normal redirect to search results
           window.location.href = '/search/results?q=' + typedQuery;
         }
       });
     }
 
-    // Hide the dropdown when clicking outside the search form
     document.addEventListener('click', function (e) {
       if (searchForm && !searchForm.contains(e.target)) {
         resultsDiv.innerHTML = '';
@@ -176,45 +150,45 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* -----------------------------------
-     Bookmark Functionality with AJAX Submission
-     ----------------------------------- */
-  const bookmarkForms = document.querySelectorAll('form.bookmark-form');
+     Bookmark Functionality using Event Delegation
+  ----------------------------------- */
+  const apartmentGrid = document.getElementById('apartment-grid');
+  if (apartmentGrid) {
+    apartmentGrid.addEventListener('submit', function (e) {
+      const form = e.target.closest('form.bookmark-form');
+      if (form) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const bookmarkButton = form.querySelector('.bookmark-btn-only');
 
-  bookmarkForms.forEach(form => {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const bookmarkButton = form.querySelector('.bookmark-btn-only');
-
-      fetch(form.action, {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
-          'Accept': 'application/json'
-        },
-        body: formData
-      })
-        .then(response => {
-          if (!response.ok) throw new Error('Network response was not OK');
-          return response.json();
+        fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+            'Accept': 'application/json'
+          },
+          body: formData
         })
-        .then(data => {
-          // Toggle the button's active state based on whether the bookmark was added
-          bookmarkButton.classList.toggle('active', data.added);
-          const message = data.added ? 'Bookmark added successfully!' : 'Bookmark removed!';
-          showBookmarkNotification(message);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          showBookmarkNotification('Error updating bookmark.');
-        });
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not OK');
+            return response.json();
+          })
+          .then(data => {
+            bookmarkButton.classList.toggle('active', data.added);
+            const message = data.added ? 'Bookmark added successfully!' : 'Bookmark removed!';
+            showBookmarkNotification(message);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            showBookmarkNotification('Error updating bookmark.');
+          });
+      }
     });
-  });
+  }
 
   function showBookmarkNotification(message) {
     const notification = document.createElement('div');
     notification.textContent = message;
-    // Simple notification styling
     notification.style.position = 'fixed';
     notification.style.top = '20px';
     notification.style.right = '20px';
@@ -225,13 +199,66 @@ document.addEventListener('DOMContentLoaded', function () {
     notification.style.zIndex = '1000';
     document.body.appendChild(notification);
 
-    // Fade out and remove the notification after 2 seconds
     setTimeout(() => {
       notification.style.transition = 'opacity 0.5s ease';
       notification.style.opacity = '0';
-      setTimeout(() => {
-        notification.remove();
-      }, 500);
+      setTimeout(() => notification.remove(), 500);
     }, 2000);
+  }
+
+  /* -----------------------------------
+     Pagination Functionality via AJAX (Preserving Filters)
+  ----------------------------------- */
+  const paginationContainer = document.getElementById('pagination');
+  if (paginationContainer) {
+    paginationContainer.addEventListener('click', function (e) {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      console.log('Clicked a pagination button:', btn);
+      let page;
+      if (btn.classList.contains('next-page')) {
+        const activeBtn = paginationContainer.querySelector('.page-number.active');
+        const currentPage = activeBtn ? parseInt(activeBtn.getAttribute('data-page')) : 1;
+        page = currentPage + 1;
+      } else {
+        page = parseInt(btn.getAttribute('data-page'));
+      }
+      console.log('Loading page:', page);
+
+      // Get current filters from the URL and add the page parameter
+      const params = new URLSearchParams(window.location.search);
+      params.set('page', page);
+      const fetchUrl = homeUrl + "?" + params.toString();
+      console.log("Fetching URL:", fetchUrl);
+
+      fetch(fetchUrl, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not OK');
+          return response.text();
+        })
+        .then(html => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+
+          // Replace the listing grid
+          const newGrid = tempDiv.querySelector('#apartment-grid');
+          if (newGrid) {
+            document.getElementById('apartment-grid').innerHTML = newGrid.innerHTML;
+          } else {
+            console.error('Apartment grid not found in response.');
+          }
+
+          // Update the pagination controls
+          const newPagination = tempDiv.querySelector('#pagination');
+          if (newPagination && paginationContainer) {
+            paginationContainer.innerHTML = newPagination.innerHTML;
+          } else {
+            console.error('Pagination not found in response.');
+          }
+        })
+        .catch(error => console.error('Error loading page:', error));
+    });
   }
 });

@@ -14,9 +14,21 @@ class HomeController extends Controller
         // Filter by Price Range (format: "min-max" or "min-")
         if ($price = $request->input('price')) {
             $parts = explode('-', $price);
-            $minPrice = $parts[0];
-            $maxPrice = $parts[1];
-            $query->whereBetween('price', [$minPrice, $maxPrice]);
+
+            // Make sure $parts has 2 items; otherwise $parts[1] may not exist
+            if (count($parts) === 2) {
+                $minPrice = (int)$parts[0];
+                $maxSegment = $parts[1];  // Could be empty if "1000000-"
+
+                if ($maxSegment === '') {
+                    // Means "Over minPrice" (e.g., "1000000-")
+                    $query->where('price', '>=', $minPrice);
+                } else {
+                    // Normal "min-max" range
+                    $maxPrice = (int)$maxSegment;
+                    $query->whereBetween('price', [$minPrice, $maxPrice]);
+                }
+            }
         }
 
         // Filter by Location (City)
@@ -30,22 +42,32 @@ class HomeController extends Controller
                 $query->where('age', '>', 20);
             } else {
                 $parts = explode('-', $age);
-                $minAge = $parts[0];
-                $maxAge = $parts[1];
-                $query->whereBetween('age', [$minAge, $maxAge]);
+                if (count($parts) === 2) {
+                    $minAge = (int)$parts[0];
+                    $maxAge = (int)$parts[1];
+                    $query->whereBetween('age', [$minAge, $maxAge]);
+                }
             }
         }
 
         // Filter by Rooms
         if ($rooms = $request->input('rooms')) {
             if ($rooms == '4') {
+                // means "4 or more"
                 $query->where('rooms', '>=', 4);
             } else {
-                $query->where('rooms', '=', $rooms);
+                $query->where('rooms', (int)$rooms);
             }
         }
 
-        $apartment = $query->get();
+        // Paginate and preserve query parameters
+        $apartment = $query->paginate(12)->appends($request->query());
+
+        // If AJAX, return just the partial; otherwise return the main view
+        if ($request->ajax()) {
+            return view('homepage', compact('apartment'))->render();
+        }
+
         return view('homepage', compact('apartment'));
     }
 }

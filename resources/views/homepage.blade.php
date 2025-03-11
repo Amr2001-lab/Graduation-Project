@@ -41,9 +41,7 @@
           <!-- Only show "Estimate Property" if user is authenticated -->
           @auth
             <li>
-              <a href="{{ route('estimate') }}" class="nav-btn">
-                Estimate Property
-              </a>
+              <a href="{{ route('estimate') }}" class="nav-btn">Estimate Property</a>
             </li>
           @endauth
 
@@ -56,16 +54,10 @@
               </span>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="{{ route('profile.show') }}" class="nav-btn">
-                    Profile
-                  </a>
+                  <a href="{{ route('profile.show') }}" class="nav-btn">Profile</a>
                 </li>
                 <li>
-                  <form
-                    action="{{ route('logout') }}"
-                    method="POST"
-                    class="logout-form"
-                  >
+                  <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <button type="submit" class="nav-btn">Logout</button>
                   </form>
@@ -92,7 +84,7 @@
       <div class="hero-content">
         <h1>Find Your Dream Home</h1>
         <p>Search from thousands of listings across the country.</p>
-        <form id="search-form" action="{{ route('search.index')}}" method="GET" class="search-form" autocomplete="off">
+        <form id="search-form" action="{{ route('search.index') }}" method="GET" class="search-form" autocomplete="off">
           <input type="text" name="q" id="search-input" placeholder="Enter address or price">
           <button type="submit">
             <i class="fas fa-search"></i> Search
@@ -110,37 +102,37 @@
         <div class="filter-item">
           <label for="price">Price Range</label>
           <select name="price" id="price">
-            <option value="">Any Price</option>
-            <option value="0-200000">Under $200K</option>
-            <option value="200000-400000">$200K - $400K</option>
-            <option value="400000-600000">$400K - $600K</option>
-            <option value="600000-1000000">$600K - $1M</option>
-            <option value="1000000-">Over $1M</option>
-          </select>
+            <option value="" {{ request('price') == "" ? 'selected' : '' }}>Any Price</option>
+            <option value="0-200000" {{ request('price') == "0-200000" ? 'selected' : '' }}>Under $200K</option>
+            <option value="200000-400000" {{ request('price') == "200000-400000" ? 'selected' : '' }}>$200K - $400K</option>
+            <option value="400000-600000" {{ request('price') == "400000-600000" ? 'selected' : '' }}>$400K - $600K</option>
+            <option value="600000-1000000" {{ request('price') == "600000-1000000" ? 'selected' : '' }}>$600K - $1M</option>
+            <option value="1000000-" {{ request('price') == "1000000-" ? 'selected' : '' }}>Over $1M</option>
+        </select>
         </div>
         <div class="filter-item">
           <label for="location">Location</label>
-          <input type="text" name="location" id="location" placeholder="e.g. Los Angeles">
+          <input type="text" name="location" id="location" placeholder="e.g. Los Angeles" value="{{ request('location') }}">
         </div>
         <div class="filter-item">
           <label for="age">Building Age</label>
           <select name="age" id="age">
-            <option value="">Any Age</option>
-            <option value="0-5">0-5 years</option>
-            <option value="6-10">6-10 years</option>
-            <option value="11-20">11-20 years</option>
-            <option value="21+">21+ years</option>
-          </select>
+            <option value="" {{ request('age') == "" ? 'selected' : '' }}>Any Age</option>
+            <option value="0-5" {{ request('age') == "0-5" ? 'selected' : '' }}>0-5 years</option>
+            <option value="6-10" {{ request('age') == "6-10" ? 'selected' : '' }}>6-10 years</option>
+            <option value="11-20" {{ request('age') == "11-20" ? 'selected' : '' }}>11-20 years</option>
+            <option value="21+" {{ request('age') == "21+" ? 'selected' : '' }}>21+ years</option>
+        </select>
         </div>
         <div class="filter-item">
           <label for="rooms">Rooms</label>
           <select name="rooms" id="rooms">
-            <option value="">Any</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4+</option>
-          </select>
+            <option value="" {{ request('rooms') == "" ? 'selected' : '' }}>Any</option>
+            <option value="1" {{ request('rooms') == "1" ? 'selected' : '' }}>1</option>
+            <option value="2" {{ request('rooms') == "2" ? 'selected' : '' }}>2</option>
+            <option value="3" {{ request('rooms') == "3" ? 'selected' : '' }}>3</option>
+            <option value="4" {{ request('rooms') == "4" ? 'selected' : '' }}>4+</option>
+        </select>
         </div>
         <button type="submit" class="filter-btn">Filter</button>
       </form>
@@ -153,7 +145,7 @@
     @if($apartment->isEmpty())
       <p style="text-align: center;">No apartments available at the moment.</p>
     @else
-      <div class="grid">
+      <div id="apartment-grid" class="grid">
         @foreach($apartment as $variable)
           <div class="card">
             <div class="card-image">
@@ -177,24 +169,44 @@
               <div class="card-actions" style="margin-top: 10px; text-align: center;">
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
                 @auth
-                <form action="{{ route('bookmarks.store') }}" method="POST" class="bookmark-form" style="display: inline-block;">
-                    @csrf
-                    <input type="hidden" name="apartment_id" value="{{ $variable->id }}">
-                    <button type="submit" class="bookmark-btn-only @if(auth()->user()->bookmarkedApartments->contains($variable->id)) active @endif">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"></path>
-                        </svg>
-                    </button>
-                </form>
+                  <form action="{{ route('bookmarks.store') }}" method="POST" class="bookmark-form" style="display: inline-block;">
+                      @csrf
+                      <input type="hidden" name="apartment_id" value="{{ $variable->id }}">
+                      <button type="submit" class="bookmark-btn-only @if(auth()->user()->bookmarkedApartments->contains($variable->id)) active @endif">
+                          <svg viewBox="0 0 24 24">
+                              <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"></path>
+                          </svg>
+                      </button>
+                  </form>
                 @endauth
               </div>
             </div>
           </div>
         @endforeach
       </div>
-    @endif
+          <!-- Pagination Section (new) -->
+          <div id="pagination" class="pagination">
+            <span class="pagination-text">Pages:</span>
+            @for ($page = 1; $page <= $apartment->lastPage(); $page++)
+              <button
+                class="page-number {{ $page == $apartment->currentPage() ? 'active' : '' }}"
+                data-page="{{ $page }}"
+              >
+                {{ $page }}
+              </button>
+            @endfor
+            {{-- Show "Next" only if not on the last page --}}
+            @if ($apartment->currentPage() < $apartment->lastPage())
+              <button
+                class="next-page"
+                data-page="{{ $apartment->currentPage() + 1 }}"
+              >
+                Next
+              </button>
+            @endif
+          </div>
+      @endif
   </main>
-
 
   <!-- Footer -->
   <footer>
@@ -203,7 +215,10 @@
     </div>
   </footer>
 
-  <!-- Include the external JavaScript file (if needed) -->
+  <!-- Include External JavaScript File -->
+  <script>
+    var homeUrl = "{{ route('home') }}";
+  </script>
   <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>
