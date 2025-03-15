@@ -6,8 +6,7 @@
 </head>
 <body>
     <header>
-        <!-- If you have a common header, reuse it here -->
-    </header>
+        </header>
 
     <main class="container" style="padding: 40px;">
         <div class="card form-card">
@@ -71,6 +70,7 @@
                 <div class="form-group">
                     <label for="images">Property Images</label>
                     <input type="file" name="images[]" id="images" multiple>
+                    <div id="image-names"></div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">List Property</button>
@@ -79,7 +79,16 @@
     </main>
 
     <footer>
-        <!-- Reuse your footer if needed -->
-    </footer>
+        </footer>
+    <script>
+        document.getElementById('images').addEventListener('change', function() {
+            const files = this.files;
+            let names = 'Selected files: ';
+            for (let i = 0; i < files.length; i++) {
+                names += files[i].name + ', ';
+            }
+            document.getElementById('image-names').innerText = names.slice(0, -2); // Remove last comma and space
+        });
+    </script>
 </body>
 </html>

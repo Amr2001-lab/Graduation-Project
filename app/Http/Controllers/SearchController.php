@@ -12,15 +12,26 @@ class SearchController extends Controller
         $query = $request->input('q');
 
         if (!$query) {
-            return response()->json([]);
+            return response()->json();
         }
 
         $apartments = Apartment::where('street', 'like', '%' . $query . '%')
             ->orWhere('city', 'like', '%' . $query . '%')
             ->orWhere('price', 'like', '%' . $query . '%')
+            ->with('images')
             ->get();
 
-        return response()->json($apartments);
+        $results = $apartments->map(function ($apartment) {
+            $firstImage = $apartment->images->first();
+            return [
+                'id' => $apartment->id,
+                'street' => $apartment->street,
+                'price' => $apartment->price,
+                'first_image_url' => $firstImage ? 'Images/' . $firstImage->image_url : null,
+            ];
+        });
+
+        return response()->json($results);
     }
 
     public function showResults(Request $request)

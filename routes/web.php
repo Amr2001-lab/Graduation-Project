@@ -34,4 +34,10 @@ Route::get('/compare/update/{id}', [CompareController::class, 'updateComparison'
 
 Route::get('/search/results', [SearchController::class, 'showResults'])->name('search.results');
 
-Route::post('/property/store', [PropertyController::class, 'store'])->middleware('auth')->name('property.store');
+Route::get('/properties/{apartment}/edit', [SellerController::class, 'edit'])->middleware('auth')->name('seller.properties.edit');
+
+Route::put('/properties/{apartment}/update', [SellerController::class, 'update'])->middleware('auth')->name('seller.properties.update');
+
+Route::delete('/seller/images/{image}', [SellerController::class, 'destroyImage'])->middleware('auth')->name('seller.images.destroy');
+
+Route::delete('/seller/properties/{apartment}', [SellerController::class, 'destroy'])->name('seller.properties.destroy');

@@ -70,15 +70,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 li.classList.add('compare-search-item');
 
                 const thumbnail = document.createElement('img');
-                if (apartment.image_url) {
-                  thumbnail.src = '/storage/Images/' + apartment.image_url;
-                  thumbnail.alt = 'Property Thumbnail';
-                  thumbnail.style.width = '50px';
-                  thumbnail.style.height = '50px';
-                  thumbnail.style.objectFit = 'cover';
-                  thumbnail.style.marginRight = '10px';
-                  thumbnail.style.verticalAlign = 'middle';
-                }
+                if (apartment.first_image_url) {
+                thumbnail.src = '/storage/' + apartment.first_image_url;
+                thumbnail.alt = 'Property Thumbnail';
+                thumbnail.style.width = '50px';
+                thumbnail.style.height = '50px';
+                thumbnail.style.objectFit = 'cover';
+                thumbnail.style.marginRight = '10px';
+                thumbnail.style.verticalAlign = 'middle';
+}
 
                 const textSpan = document.createElement('span');
                 textSpan.textContent = apartment.street + ' - $' + apartment.price;
@@ -261,4 +261,106 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error loading page:', error));
     });
   }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  var galleryThumbs;
+  var galleryTop;
+
+  // Check if thumbnail slider exists before initializing
+  if (document.querySelector('.gallery-thumbs')) {
+    galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 10,
+      slidesPerView: 5,
+      freeMode: true,
+      watchSlidesVisibility: true,
+      watchSlidesProgress: true,
+    });
+  }
+
+  // Main slider initialization
+  galleryTop = new Swiper('.gallery-top', {
+    spaceBetween: 10,
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    thumbs: {
+      swiper: galleryThumbs ? galleryThumbs : null,
+    },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const imageInput = document.getElementById('images');
+  const selectedImageNamesDiv = document.getElementById('selected-image-names');
+
+  if (imageInput && selectedImageNamesDiv) {
+      imageInput.addEventListener('change', function() {
+          selectedImageNamesDiv.innerHTML = ''; // Clear previous names
+          if (this.files && this.files.length > 0) {
+              const names = Array.from(this.files).map(file => file.name);
+              selectedImageNamesDiv.textContent = 'Selected files: ' + names.join(', ');
+          } else {
+              selectedImageNamesDiv.textContent = ''; // No files selected
+          }
+      });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const imageInput = document.getElementById('images');
+  const selectedImageNamesDiv = document.getElementById('selected-images-names');
+
+  if (imageInput && selectedImageNamesDiv) {
+      imageInput.addEventListener('change', function() {
+          selectedImageNamesDiv.innerHTML = ''; // Clear previous names
+          if (this.files && this.files.length > 0) {
+              const names = Array.from(this.files).map(file => file.name);
+              selectedImageNamesDiv.textContent = 'Selected files: ' + names.join(', ');
+          } else {
+              selectedImageNamesDiv.textContent = ''; // No files selected
+          }
+      });
+  }
+
+  const removeImageButtons = document.querySelectorAll('.remove-image-btn');
+
+  removeImageButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          const imageId = this.getAttribute('data-image-id');
+          const listItem = this.closest('.current-image-item');
+
+          if (confirm('Are you sure you want to remove this image?')) {
+              fetch(`/seller/images/${imageId}`, {
+                  method: 'DELETE',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'), // Assuming you have this meta tag in your head
+                  },
+              })
+              .then(response => {
+                  if (response.ok) {
+                      listItem.remove(); // Remove the image from the DOM
+                      alert('Image removed successfully!');
+                  } else {
+                      alert('Error removing image.');
+                      console.error('Error removing image:', response);
+                  }
+              })
+              .catch(error => {
+                  alert('Error removing image.');
+                  console.error('Error:', error);
+              });
+          }
+      });
+  });
 });

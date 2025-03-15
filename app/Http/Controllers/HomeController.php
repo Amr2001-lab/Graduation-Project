@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Apartment::query();
+        $query = Apartment::query()->with('images'); // Eager load images relationship
 
         // Filter by Price Range (format: "min-max" or "min-")
         if ($price = $request->input('price')) {
@@ -18,7 +18,7 @@ class HomeController extends Controller
             // Make sure $parts has 2 items; otherwise $parts[1] may not exist
             if (count($parts) === 2) {
                 $minPrice = (int)$parts[0];
-                $maxSegment = $parts[1];  // Could be empty if "1000000-"
+                $maxSegment = $parts[1];     // Could be empty if "1000000-"
 
                 if ($maxSegment === '') {
                     // Means "Over minPrice" (e.g., "1000000-")

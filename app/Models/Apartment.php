@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Apartment extends Model
 {
     use HasFactory;
 
-    // This is correct because your MySQL table name is "apartment"
     protected $table = 'apartment';
 
     protected $fillable = [
@@ -22,7 +22,7 @@ class Apartment extends Model
         'rooms',
         'bathrooms',
         'phone',
-        'image_url'
+
     ];
 
     public function bookmarks()
@@ -33,5 +33,15 @@ class Apartment extends Model
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ApartmentImage::class, 'apartment_id');
+    }
+
+    public function getMainImageAttribute()
+    {
+        return $this->images()->first();
     }
 }

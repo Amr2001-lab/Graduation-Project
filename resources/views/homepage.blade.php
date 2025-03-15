@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Real Estate Listings</title>
-  <!-- Link to the external CSS file (look.css) located in the public folder -->
   <link rel="stylesheet" href="{{ asset('look.css') }}" />
-  <!-- Font Awesome for search icon -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -16,7 +14,6 @@
   />
 </head>
 <body>
-  <!-- Header -->
   <header>
     <div class="header-container">
       <div class="logo">
@@ -28,7 +25,6 @@
         </a>
       </div>
 
-      <!-- Main Navigation with left and right sections -->
       <nav class="main-nav">
         <ul class="nav-left">
           <li><a href="#">Buy</a></li>
@@ -38,7 +34,6 @@
         </ul>
 
         <ul class="nav-right">
-          <!-- Only show "Estimate Property" if user is authenticated -->
           @auth
             <li>
               <a href="{{ route('estimate') }}" class="nav-btn">Estimate Property</a>
@@ -46,7 +41,6 @@
           @endauth
 
           @if(Auth::check())
-            <!-- Logged-in user dropdown/menu -->
             <li class="user-dropdown">
               <span class="welcome-msg">
                 Welcome, {{ Auth::user()->name }}
@@ -65,7 +59,6 @@
               </ul>
             </li>
           @else
-            <!-- Guest links -->
             <li>
               <a href="{{ route('login.show') }}" class="nav-btn">Login</a>
             </li>
@@ -78,7 +71,6 @@
     </div>
   </header>
 
-  <!-- Hero Section with Live Search -->
   <section class="hero">
     <div class="hero-overlay">
       <div class="hero-content">
@@ -95,7 +87,6 @@
     </div>
   </section>
 
-  <!-- Filter Section -->
   <section class="filters">
     <div class="container">
       <form id="filter-form" action="{{ route('home') }}" method="GET">
@@ -134,12 +125,13 @@
             <option value="4" {{ request('rooms') == "4" ? 'selected' : '' }}>4+</option>
         </select>
         </div>
-        <button type="submit" class="filter-btn">Filter</button>
+        <button type="submit" class="filter-btn">
+          Filter
+        </button>
       </form>
     </div>
   </section>
 
-  <!-- Listings Section -->
   <main class="container listings">
     <h2>Featured Listings</h2>
     @if($apartment->isEmpty())
@@ -149,9 +141,8 @@
         @foreach($apartment as $variable)
           <div class="card">
             <div class="card-image">
-              <img 
-                src="{{ $variable->image_url ? asset('storage/Images/' . $variable->image_url) : 'https://via.placeholder.com/400x300.png?text=No+Image' }}" 
-                alt="Property Image"
+              <img
+                src="{{ $variable->images === null ? 'https://via.placeholder.com/400x300.png?text=No+Image' : (optional($variable->images->first())->image_url ? asset('storage/Images/' . optional($variable->images->first())->image_url) : 'https://via.placeholder.com/400x300.png?text=No+Image') }}"
               />
             </div>
             <div class="card-content">
@@ -170,13 +161,13 @@
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
                 @auth
                   <form action="{{ route('bookmarks.store') }}" method="POST" class="bookmark-form" style="display: inline-block;">
-                      @csrf
-                      <input type="hidden" name="apartment_id" value="{{ $variable->id }}">
-                      <button type="submit" class="bookmark-btn-only @if(auth()->user()->bookmarkedApartments->contains($variable->id)) active @endif">
-                          <svg viewBox="0 0 24 24">
-                              <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"></path>
-                          </svg>
-                      </button>
+                    @csrf
+                    <input type="hidden" name="apartment_id" value="{{ $variable->id }}">
+                    <button type="submit" class="bookmark-btn-only @if(auth()->user()->bookmarkedApartments->contains($variable->id)) active @endif">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"></path>
+                      </svg>
+                    </button>
                   </form>
                 @endauth
               </div>
@@ -184,7 +175,6 @@
           </div>
         @endforeach
       </div>
-          <!-- Pagination Section (new) -->
           <div id="pagination" class="pagination">
             <span class="pagination-text">Pages:</span>
             @for ($page = 1; $page <= $apartment->lastPage(); $page++)
@@ -208,14 +198,12 @@
       @endif
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="container">
       <p>&copy; {{ date('Y') }} Real Estate Listings. All Rights Reserved.</p>
     </div>
   </footer>
 
-  <!-- Include External JavaScript File -->
   <script>
     var homeUrl = "{{ route('home') }}";
   </script>

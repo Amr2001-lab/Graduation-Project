@@ -50,13 +50,10 @@
             </form>
           </li>
         </ul>
-        
       </nav>
     </div>
   </header>
   
-  
-
   <!-- Hero Section -->
   <section class="hero" style="height:300px; background: url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=996&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA==') no-repeat center center/cover;">
     <div class="hero-overlay" style="background: rgba(0,0,0,0.5);">
@@ -83,9 +80,13 @@
         <div class="grid">
           @foreach($bookmarks as $bookmark)
             <div class="card">
-              <img src="{{ $bookmark->apartment->image_url 
-                ? asset('storage/Images/' . $bookmark->apartment->image_url) 
-                : 'https://via.placeholder.com/400x250.png?text=No+Image' }}" alt="Property Image">
+              @php
+                $mainImage = $bookmark->apartment->main_image;
+                $imgSrc = $mainImage 
+                          ? asset('storage/Images/' . $mainImage->image_url)
+                          : 'https://via.placeholder.com/400x250.png?text=No+Image';
+              @endphp
+              <img src="{{ $imgSrc }}" alt="Property Image">
               <div class="card-content">
                 <h3>{{ $bookmark->apartment->city }} Apartment</h3>
                 <p class="price">${{ number_format($bookmark->apartment->price, 2) }}</p>
@@ -101,7 +102,6 @@
       @endif
     </section>
     
-    
     <!-- Listed Properties Section -->
     <section class="listed-properties">
       <h2>My Listed Properties</h2>
@@ -111,9 +111,13 @@
         <div class="grid">
           @foreach($properties as $property)
             <div class="card">
-              <img src="{{ $property->image_url 
-                ? asset('storage/Images/' . $property->image_url) 
-                : 'https://via.placeholder.com/400x250.png?text=No+Image' }}" alt="Property Image">
+              @php
+                $mainImage = $property->main_image;
+                $imgSrc = $mainImage 
+                          ? asset('storage/Images/' . $mainImage->image_url)
+                          : 'https://via.placeholder.com/400x250.png?text=No+Image';
+              @endphp
+              <img src="{{ $imgSrc }}" alt="Property Image">
               <div class="card-content">
                 <h3>{{ $property->city }} Apartment</h3>
                 <p class="price">${{ number_format($property->price, 2) }}</p>
