@@ -160,15 +160,7 @@
       </div>
     </div>
   </main>
-
-  <!-- Sidebar with Listing Actions (e.g. Save, Share) -->
-  <aside class="property-sidebar">
-    <div class="listing-actions">
-      <button class="button icon-btn" aria-label="Save listing"><i class="fas fa-heart"></i></button>
-      <button class="button icon-btn" aria-label="Share listing"><i class="fas fa-share"></i></button>
-    </div>
-  </aside>
-
+  
   <!-- Footer with Social Links -->
   <footer>
     <div class="container">
