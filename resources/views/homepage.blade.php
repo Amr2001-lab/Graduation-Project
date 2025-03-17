@@ -5,13 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Real Estate Listings</title>
   <link rel="stylesheet" href="{{ asset('look.css') }}" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-    integrity="sha512-xh6O5ZtovKkfM2aDmpssY47Qq8N5k6v2hQcN8uHlbzqcpFzMVzIw5N0d7HgA9ETV5k4vYRqcpKdT2DsFIV9y+A=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="stylesheet" href="{{ asset('fontawesome/fontawesome-free-6.7.2-web/css/all.min.css') }}">
 </head>
 <body>
   <header>
@@ -148,12 +142,12 @@
             <div class="card-content">
               <h3>{{ $variable->street }} ({{ $variable->city }})</h3>
               <p class="price">${{ number_format($variable->price, 2) }}</p>
-              <ul>
-                <li><strong>Size:</strong> {{ $variable->size ?? 'N/A' }} sq ft</li>
-                <li><strong>Rooms:</strong> {{ $variable->rooms ?? 'N/A' }}</li>
-                <li><strong>Bathrooms:</strong> {{ $variable->bathrooms ?? 'N/A' }}</li>
-                <li><strong>Age:</strong> {{ $variable->age ?? 'N/A' }} years</li>
-              </ul>
+              <div class="key-info">
+                <span><i class="fa-solid fa-ruler"></i> {{ $variable->size ?? 'N/A' }} sq ft</span>
+                <span><i class="fa-solid fa-bed"></i> {{ $variable->rooms ?? 'N/A' }} Rooms</span>
+                <span><i class="fa-solid fa-bath"></i> {{ $variable->bathrooms ?? 'N/A' }} Bathrooms</span>
+                <span><i class="fa-solid fa-calendar-days"></i> {{ $variable->age ?? 'N/A' }} years</span>
+              </div>
               @if($variable->phone)
                 <p><strong>Contact Phone:</strong> {{ $variable->phone }}</p>
               @endif
@@ -175,26 +169,33 @@
           </div>
         @endforeach
       </div>
-          <div id="pagination" class="pagination">
-            <span class="pagination-text">Pages:</span>
-            @for ($page = 1; $page <= $apartment->lastPage(); $page++)
-              <button
+      <div id="pagination" class="pagination">
+        <span class="pagination-text">Pages:</span>
+        @if ($apartment->currentPage() > 1)
+            <button
+                class="prev-page"
+                data-page="{{ $apartment->currentPage() - 1 }}"
+            >
+                Previous
+            </button>
+        @endif
+        @for ($page = 1; $page <= $apartment->lastPage(); $page++)
+            <button
                 class="page-number {{ $page == $apartment->currentPage() ? 'active' : '' }}"
                 data-page="{{ $page }}"
-              >
+            >
                 {{ $page }}
-              </button>
-            @endfor
-            {{-- Show "Next" only if not on the last page --}}
-            @if ($apartment->currentPage() < $apartment->lastPage())
-              <button
+            </button>
+        @endfor
+        @if ($apartment->currentPage() < $apartment->lastPage())
+            <button
                 class="next-page"
                 data-page="{{ $apartment->currentPage() + 1 }}"
-              >
+            >
                 Next
-              </button>
-            @endif
-          </div>
+            </button>
+        @endif
+    </div>
       @endif
   </main>
 
