@@ -22,7 +22,7 @@ class SearchController extends Controller
             ->get();
 
         $results = $apartments->map(function ($apartment) {
-            $firstImage = $apartment->images->first();
+            $firstImage = $apartment->images->get();
             return [
                 'id' => $apartment->id,
                 'street' => $apartment->street,

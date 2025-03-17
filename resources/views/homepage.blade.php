@@ -21,16 +21,18 @@
 
       <nav class="main-nav">
         <ul class="nav-left">
-          <li><a href="#">Buy</a></li>
-          <li><a href="#">Rent</a></li>
-          <li><a href="#">Sell</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#"><i class="fa-solid fa-house-chimney"></i> Buy</a></li>
+          <li><a href="#"><i class="fa-solid fa-handshake-angle"></i> Rent</a></li>
+          <li><a href="#"><i class="fa-solid fa-dollar-sign"></i> Sell</a></li>
+          <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
         </ul>
 
         <ul class="nav-right">
           @auth
             <li>
-              <a href="{{ route('estimate') }}" class="nav-btn">Estimate Property</a>
+              <a href="{{ route('estimate') }}" class="nav-btn">
+                <i class="fa-solid fa-chart-line"></i> Estimate Property
+              </a>
             </li>
           @endauth
 
@@ -38,26 +40,34 @@
             <li class="user-dropdown">
               <span class="welcome-msg">
                 Welcome, {{ Auth::user()->name }}
-                <i class="fas fa-caret-down"></i>
+                <i class="fa-solid fa-caret-down"></i>
               </span>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="{{ route('profile.show') }}" class="nav-btn">Profile</a>
+                  <a href="{{ route('profile.show') }}" class="nav-btn">
+                    <i class="fa-solid fa-user"></i> Profile
+                  </a>
                 </li>
                 <li>
                   <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
-                    <button type="submit" class="nav-btn">Logout</button>
+                    <button type="submit" class="nav-btn">
+                      <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
                   </form>
                 </li>
               </ul>
             </li>
           @else
             <li>
-              <a href="{{ route('login.show') }}" class="nav-btn">Login</a>
+              <a href="{{ route('login.show') }}" class="nav-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+              </a>
             </li>
             <li>
-              <a href="{{ route('register.show') }}" class="nav-btn">Register</a>
+              <a href="{{ route('register.show') }}" class="nav-btn">
+                <i class="fa-solid fa-user-plus"></i> Register
+              </a>
             </li>
           @endif
         </ul>
@@ -70,10 +80,11 @@
       <div class="hero-content">
         <h1>Find Your Dream Home</h1>
         <p>Search from thousands of listings across the country.</p>
+
         <form id="search-form" action="{{ route('search.index') }}" method="GET" class="search-form" autocomplete="off">
           <input type="text" name="q" id="search-input" placeholder="Enter address or price">
-          <button type="submit">
-            <i class="fas fa-search"></i> Search
+          <button type="submit" class="search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
           </button>
         </form>
         <div id="search-results" style="border: none;"></div>
@@ -84,6 +95,7 @@
   <section class="filters">
     <div class="container">
       <form id="filter-form" action="{{ route('home') }}" method="GET">
+        <!-- Price Range -->
         <div class="filter-item">
           <label for="price">Price Range</label>
           <select name="price" id="price">
@@ -93,12 +105,22 @@
             <option value="400000-600000" {{ request('price') == "400000-600000" ? 'selected' : '' }}>$400K - $600K</option>
             <option value="600000-1000000" {{ request('price') == "600000-1000000" ? 'selected' : '' }}>$600K - $1M</option>
             <option value="1000000-" {{ request('price') == "1000000-" ? 'selected' : '' }}>Over $1M</option>
-        </select>
+          </select>
         </div>
+
+        <!-- Location -->
         <div class="filter-item">
           <label for="location">Location</label>
-          <input type="text" name="location" id="location" placeholder="e.g. Los Angeles" value="{{ request('location') }}">
+          <input
+            type="text"
+            name="location"
+            id="location"
+            placeholder="e.g. Los Angeles"
+            value="{{ request('location') }}"
+          />
         </div>
+
+        <!-- Building Age -->
         <div class="filter-item">
           <label for="age">Building Age</label>
           <select name="age" id="age">
@@ -107,8 +129,10 @@
             <option value="6-10" {{ request('age') == "6-10" ? 'selected' : '' }}>6-10 years</option>
             <option value="11-20" {{ request('age') == "11-20" ? 'selected' : '' }}>11-20 years</option>
             <option value="21+" {{ request('age') == "21+" ? 'selected' : '' }}>21+ years</option>
-        </select>
+          </select>
         </div>
+
+        <!-- Rooms -->
         <div class="filter-item">
           <label for="rooms">Rooms</label>
           <select name="rooms" id="rooms">
@@ -117,8 +141,10 @@
             <option value="2" {{ request('rooms') == "2" ? 'selected' : '' }}>2</option>
             <option value="3" {{ request('rooms') == "3" ? 'selected' : '' }}>3</option>
             <option value="4" {{ request('rooms') == "4" ? 'selected' : '' }}>4+</option>
-        </select>
+          </select>
         </div>
+
+        <!-- Filter button -->
         <button type="submit" class="filter-btn">
           Filter
         </button>
@@ -136,7 +162,13 @@
           <div class="card">
             <div class="card-image">
               <img
-                src="{{ $variable->images === null ? 'https://via.placeholder.com/400x300.png?text=No+Image' : (optional($variable->images->first())->image_url ? asset('storage/Images/' . optional($variable->images->first())->image_url) : 'https://via.placeholder.com/400x300.png?text=No+Image') }}"
+                src="{{ $variable->images === null
+                  ? 'https://via.placeholder.com/400x300.png?text=No+Image'
+                  : (
+                    optional($variable->images->first())->image_url
+                      ? asset('storage/Images/' . optional($variable->images->first())->image_url)
+                      : 'https://via.placeholder.com/400x300.png?text=No+Image'
+                  ) }}"
               />
             </div>
             <div class="card-content">
@@ -151,6 +183,7 @@
               @if($variable->phone)
                 <p><strong>Contact Phone:</strong> {{ $variable->phone }}</p>
               @endif
+
               <div class="card-actions" style="margin-top: 10px; text-align: center;">
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
                 @auth
@@ -169,34 +202,32 @@
           </div>
         @endforeach
       </div>
+
+      <!-- Pagination -->
       <div id="pagination" class="pagination">
         <span class="pagination-text">Pages:</span>
         @if ($apartment->currentPage() > 1)
-            <button
-                class="prev-page"
-                data-page="{{ $apartment->currentPage() - 1 }}"
-            >
-                Previous
-            </button>
+          <button class="prev-page" data-page="{{ $apartment->currentPage() - 1 }}">
+              Previous
+          </button>
         @endif
+
         @for ($page = 1; $page <= $apartment->lastPage(); $page++)
-            <button
-                class="page-number {{ $page == $apartment->currentPage() ? 'active' : '' }}"
-                data-page="{{ $page }}"
-            >
-                {{ $page }}
-            </button>
+          <button
+            class="page-number {{ $page == $apartment->currentPage() ? 'active' : '' }}"
+            data-page="{{ $page }}"
+          >
+            {{ $page }}
+          </button>
         @endfor
+
         @if ($apartment->currentPage() < $apartment->lastPage())
-            <button
-                class="next-page"
-                data-page="{{ $apartment->currentPage() + 1 }}"
-            >
-                Next
-            </button>
+          <button class="next-page" data-page="{{ $apartment->currentPage() + 1 }}">
+            Next
+          </button>
         @endif
-    </div>
-      @endif
+      </div>
+    @endif
   </main>
 
   <footer>
@@ -204,10 +235,6 @@
       <p>&copy; {{ date('Y') }} Real Estate Listings. All Rights Reserved.</p>
     </div>
   </footer>
-
-  <script>
-    var homeUrl = "{{ route('home') }}";
-  </script>
   <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>

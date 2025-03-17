@@ -162,7 +162,8 @@ header {
 /**************************************************/
 .hero {
   position: relative;
-  background: url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=996&auto=format&fit=crop') no-repeat center center / cover;
+  background: url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=996&auto=format&fit=crop')
+    no-repeat center center / cover;
   height: 450px;
   display: flex;
   align-items: center;
@@ -328,7 +329,6 @@ header {
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
 }
-
 
 /**************************************************/
 /*                  Card Styles                   */
@@ -871,24 +871,24 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px; 
+  gap: 15px;
   margin: 30px 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .pagination .pagination-text {
-  font-size: 1.1rem; 
-  font-weight: 500; 
-  color: #555; 
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
   margin-right: 15px;
 }
 
 .pagination button {
-  padding: 10px 16px; 
-  background: #f0f0f0; 
-  color: #333; 
-  border: 1px solid #ccc; 
-  border-radius: 8px; 
+  padding: 10px 16px;
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
   font-size: 1rem;
@@ -896,36 +896,33 @@ footer {
 }
 
 .pagination button:hover {
-  background-color: #e0e0e0; 
-  transform: scale(1.03); 
+  background-color: #e0e0e0;
+  transform: scale(1.03);
 }
 
 .pagination .page-number.active {
-  background-color: #000; 
+  background-color: #000;
   color: #fff;
-  border-color: #000; 
+  border-color: #000;
 }
 
 .pagination .page-number.active:hover {
-  background-color: #333; 
-  transform: scale(1); 
+  background-color: #333;
+  transform: scale(1);
 }
 
 .pagination .next-page,
 .pagination .prev-page {
- 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px; 
+  padding: 10px 18px;
 }
-
 
 .pagination .next-page::after {
   content: '\00BB';
   margin-left: 5px;
 }
-
 
 /**************************************************/
 /*             Gallery Slider Styles              */
@@ -1046,7 +1043,7 @@ footer {
   margin-bottom: 20px;
 }
 
-/* Option 1: Targeting the key-info within the listings section on the homepage */
+/* Key-info styles, with "Font Awesome 5 Free" reference removed */
 .listings .card .card-content .key-info,
 .property-details-page .property-summary .key-info {
   display: flex;
@@ -1069,10 +1066,11 @@ footer {
 .property-details-page .property-summary .key-info span i {
   margin-right: 8px;
   color: #555;
-  font-family: "Font Awesome 5 Free";
+  /* font-family: "Font Awesome 5 Free";  <-- Removed this line */
   font-weight: 900;
 }
 
+/* property-details-page sections below this remain unchanged */
 .property-details-page .property-more-details h3 {
   font-size: 18px;
   margin-top: 30px;
@@ -1120,33 +1118,34 @@ footer {
   background-color: #007bff;
   color: white;
 }
-
 .property-details-page .button.primary:hover {
   background-color: #0056b3;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
-
 .property-details-page .button.secondary {
   background-color: #6c757d;
   color: white;
 }
-
 .property-details-page .button.secondary:hover {
   background-color: #545b62;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
-
 .property-details-page .button.danger {
   background-color: #dc3545;
   color: white;
 }
-
 .property-details-page .button.danger:hover {
   background-color: #c82333;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-.key-info span i {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
+/**************************************************/
+/*         Optional Spacing for Button Icons      */
+/**************************************************/
+/* Add margin to icons in nav-btn & search button if desired */
+.nav-btn i {
+  margin-right: 6px;
+}
+.search-btn i {
+  margin-right: 6px;
 }
