@@ -235,6 +235,9 @@
       <p>&copy; {{ date('Y') }} Real Estate Listings. All Rights Reserved.</p>
     </div>
   </footer>
+  <script>
+    var homeUrl = "{{route('home')}}";
+  </script>
   <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>
