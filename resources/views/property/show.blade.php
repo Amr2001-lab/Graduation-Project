@@ -6,40 +6,11 @@
   <title>{{ $property->city }} Apartment Details</title>
   <meta name="description" content="Explore the details of this {{ $property->city }} apartment – high-quality images, pricing, and property information." />
 
-  <!-- Main CSS -->
   <link rel="stylesheet" href="{{ asset('look.css') }}" />
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-  <!-- Swiper Slider CSS -->
+  <link rel="stylesheet" href="{{ asset('fontawesome/fontawesome-free-6.7.2-web/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('vendor/swiper/swiper-bundle.min.css') }}" />
-
-  <!-- Structured Data for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SingleFamilyResidence",
-    "name": "{{ $property->city }} Apartment Details",
-    "description": "Property details for a {{ $property->city }} apartment located at {{ $property->street }}.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "{{ $property->street }}",
-      "addressLocality": "{{ $property->city }}",
-      "addressRegion": "FL",
-      "postalCode": "{{ $property->postal_code ?? '33319' }}"
-    },
-    "floorSize": {
-      "@type": "QuantitativeValue",
-      "value": "{{ $property->size }}",
-      "unitCode": "SQF"
-    },
-    "numberOfRooms": "{{ $property->rooms }}",
-    "numberOfBathroomsTotal": "{{ $property->bathrooms }}",
-    "price": "{{ $property->price }}"
-  }
-  </script>
 </head>
 <body>
-  <!-- Header -->
   <header>
     <div class="container header-container">
       <div class="logo">
@@ -127,7 +98,7 @@
       <div class="property-summary">
         <h2>{{ $property->city }} Apartment Details</h2>
         <div class="key-info">
-          <span><i class="fas fa-ruler-combined"></i> {{ $property->size }} sq ft</span>
+          <span><i class="fa-solid fa-ruler"></i> {{ $property->size }} sq ft</span>
           <span><i class="fas fa-map-marker-alt"></i> {{ $property->street }}</span>
           <span><i class="fas fa-calendar-alt"></i> {{ $property->age }} years</span>
           <span><i class="fas fa-bed"></i> {{ $property->rooms }} Rooms</span>
@@ -139,7 +110,6 @@
         <h3>More Details</h3>
         <ul>
           <li><strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}</li>
-          <!-- Add additional details as needed -->
         </ul>
       </div>
 
@@ -161,7 +131,6 @@
     </div>
   </main>
   
-  <!-- Footer with Social Links -->
   <footer>
     <div class="container">
       <p>&copy; {{ date('Y') }} Real Estate Listings. All Rights Reserved.</p>

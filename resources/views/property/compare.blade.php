@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <title>Compare Properties</title>
   <link rel="stylesheet" href="{{ asset('look.css') }}">
-  <!-- Font Awesome (if needed for search icon) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" 
+  <link rel="stylesheet" href="{{ asset('fontawesome/fontawesome-free-6.7.2-web/css/all.min.css') }}"
         integrity="sha512-xh6O5ZtovKkfM2aDmpssY47Qq8N5k6v2hQcN8uHlbzqcpFzMVzIw5N0d7HgA9ETV5k4vYRqcpKdT2DsFIV9y+A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
