@@ -1,8 +1,8 @@
-console.log('JS file loaded');
 
 document.addEventListener('DOMContentLoaded', function () {
   /* -----------------------------------
-     Modal Functionality for "View Details" buttons
+      Modal Functionality for "View Details" buttons
+      (Existing Example You Had)
   ----------------------------------- */
   const modalTriggers = document.querySelectorAll('[data-modal]');
   modalTriggers.forEach(trigger => {
@@ -41,7 +41,46 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* -----------------------------------
-     Live Search Functionality with Conditional Behavior
+    Inquiry Modal for "Contact Agent" - UPDATED
+----------------------------------- */
+const openInquiryBtn = document.getElementById('openInquiryModal');
+const inquiryModalOverlay = document.getElementById('inquiryModal');
+const closeInquiryBtn = document.getElementById('closeInquiryModal');
+
+if (openInquiryBtn && inquiryModalOverlay && closeInquiryBtn) {
+  // Show Modal
+  openInquiryBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    inquiryModalOverlay.classList.add('active');
+    // Small timeout to ensure CSS transitions work
+    setTimeout(() => {
+      inquiryModalOverlay.querySelector('.modal').classList.add('show');
+    }, 10);
+  });
+
+  // Hide Modal
+  closeInquiryBtn.addEventListener('click', function() {
+    inquiryModalOverlay.querySelector('.modal').classList.remove('show');
+    // Wait for transition before removing active class
+    setTimeout(() => {
+      inquiryModalOverlay.classList.remove('active');
+    }, 300);
+  });
+
+  // Close when clicking outside
+  inquiryModalOverlay.addEventListener('click', function(e) {
+    if (e.target === inquiryModalOverlay) {
+      inquiryModalOverlay.querySelector('.modal').classList.remove('show');
+      setTimeout(() => {
+        inquiryModalOverlay.classList.remove('active');
+      }, 300);
+    }
+  });
+}
+
+  /* -----------------------------------
+      Live Search Functionality with Conditional Behavior
+      (Your Existing Code - Assuming this is in script.js)
   ----------------------------------- */
   const searchInput = document.getElementById('compare-search-input') || document.getElementById('search-input');
   const resultsDiv = document.getElementById('compare-search-results') || document.getElementById('search-results');
@@ -71,14 +110,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const thumbnail = document.createElement('img');
                 if (apartment.first_image_url) {
-                thumbnail.src = '/storage/' + apartment.first_image_url;
-                thumbnail.alt = 'Property Thumbnail';
-                thumbnail.style.width = '50px';
-                thumbnail.style.height = '50px';
-                thumbnail.style.objectFit = 'cover';
-                thumbnail.style.marginRight = '10px';
-                thumbnail.style.verticalAlign = 'middle';
-}
+                  thumbnail.src = '/storage/' + apartment.first_image_url;
+                  thumbnail.alt = 'Property Thumbnail';
+                  thumbnail.style.width = '50px';
+                  thumbnail.style.height = '50px';
+                  thumbnail.style.objectFit = 'cover';
+                  thumbnail.style.marginRight = '10px';
+                  thumbnail.style.verticalAlign = 'middle';
+                }
 
                 const textSpan = document.createElement('span');
                 textSpan.textContent = apartment.street + ' - $' + apartment.price;
@@ -150,7 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* -----------------------------------
-     Bookmark Functionality using Event Delegation
+      Bookmark Functionality using Event Delegation
+      (Your Existing Code - Assuming this is in script.js)
   ----------------------------------- */
   const apartmentGrid = document.getElementById('apartment-grid');
   if (apartmentGrid) {
@@ -207,7 +247,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* -----------------------------------
-     Pagination Functionality via AJAX (Preserving Filters)
+      Pagination Functionality via AJAX (Preserving Filters)
+      (Your Existing Code - Assuming this is in script.js)
   ----------------------------------- */
   const paginationContainer = document.getElementById('pagination');
   if (paginationContainer) {
@@ -263,11 +304,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Swiper setups & additional event listeners
 document.addEventListener('DOMContentLoaded', function() {
   var galleryThumbs;
   var galleryTop;
 
-  // Check if thumbnail slider exists before initializing
   if (document.querySelector('.gallery-thumbs')) {
     galleryThumbs = new Swiper('.gallery-thumbs', {
       spaceBetween: 10,
@@ -278,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Main slider initialization
   galleryTop = new Swiper('.gallery-top', {
     spaceBetween: 10,
     loop: true,
@@ -305,15 +345,15 @@ document.addEventListener('DOMContentLoaded', function() {
   const selectedImageNamesDiv = document.getElementById('selected-image-names');
 
   if (imageInput && selectedImageNamesDiv) {
-      imageInput.addEventListener('change', function() {
-          selectedImageNamesDiv.innerHTML = ''; // Clear previous names
-          if (this.files && this.files.length > 0) {
-              const names = Array.from(this.files).map(file => file.name);
-              selectedImageNamesDiv.textContent = 'Selected files: ' + names.join(', ');
-          } else {
-              selectedImageNamesDiv.textContent = ''; // No files selected
-          }
-      });
+    imageInput.addEventListener('change', function() {
+      selectedImageNamesDiv.innerHTML = ''; // Clear previous names
+      if (this.files && this.files.length > 0) {
+        const names = Array.from(this.files).map(file => file.name);
+        selectedImageNamesDiv.textContent = 'Selected files: ' + names.join(', ');
+      } else {
+        selectedImageNamesDiv.textContent = ''; // No files selected
+      }
+    });
   }
 });
 
@@ -322,45 +362,45 @@ document.addEventListener('DOMContentLoaded', function() {
   const selectedImageNamesDiv = document.getElementById('selected-images-names');
 
   if (imageInput && selectedImageNamesDiv) {
-      imageInput.addEventListener('change', function() {
-          selectedImageNamesDiv.innerHTML = ''; // Clear previous names
-          if (this.files && this.files.length > 0) {
-              const names = Array.from(this.files).map(file => file.name);
-              selectedImageNamesDiv.textContent = 'Selected files: ' + names.join(', ');
-          } else {
-              selectedImageNamesDiv.textContent = ''; // No files selected
-          }
-      });
+    imageInput.addEventListener('change', function() {
+      selectedImageNamesDiv.innerHTML = ''; // Clear previous names
+      if (this.files && this.files.length > 0) {
+        const names = Array.from(this.files).map(file => file.name);
+        selectedImageNamesDiv.textContent = 'Selected files: ' + names.join(', ');
+      } else {
+        selectedImageNamesDiv.textContent = ''; // No files selected
+      }
+    });
   }
 
   const removeImageButtons = document.querySelectorAll('.remove-image-btn');
 
   removeImageButtons.forEach(button => {
-      button.addEventListener('click', function() {
-          const imageId = this.getAttribute('data-image-id');
-          const listItem = this.closest('.current-image-item');
+    button.addEventListener('click', function() {
+      const imageId = this.getAttribute('data-image-id');
+      const listItem = this.closest('.current-image-item');
 
-          if (confirm('Are you sure you want to remove this image?')) {
-              fetch(`/seller/images/${imageId}`, {
-                  method: 'DELETE',
-                  headers: {
-                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'), // Assuming you have this meta tag in your head
-                  },
-              })
-              .then(response => {
-                  if (response.ok) {
-                      listItem.remove(); // Remove the image from the DOM
-                      alert('Image removed successfully!');
-                  } else {
-                      alert('Error removing image.');
-                      console.error('Error removing image:', response);
-                  }
-              })
-              .catch(error => {
-                  alert('Error removing image.');
-                  console.error('Error:', error);
-              });
-          }
-      });
+      if (confirm('Are you sure you want to remove this image?')) {
+        fetch(`/seller/images/${imageId}`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              listItem.remove(); // Remove the image from the DOM
+              alert('Image removed successfully!');
+            } else {
+              alert('Error removing image.');
+              console.error('Error removing image:', response);
+            }
+          })
+          .catch(error => {
+            alert('Error removing image.');
+            console.error('Error:', error);
+          });
+      }
+    });
   });
 });

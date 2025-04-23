@@ -12,10 +12,7 @@
     <div class="header-container">
       <div class="logo">
         <a href="/">
-          <img
-            src="https://www.creativefabrica.com/wp-content/uploads/2021/03/15/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg"
-            alt="Real Estate Logo"
-          />
+          <img src="storage/Images/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg" alt="Real Estate Logo">
         </a>
       </div>
 
@@ -107,19 +104,13 @@
             <option value="1000000-" {{ request('price') == "1000000-" ? 'selected' : '' }}>Over $1M</option>
           </select>
         </div>
-
+      
         <!-- Location -->
         <div class="filter-item">
           <label for="location">Location</label>
-          <input
-            type="text"
-            name="location"
-            id="location"
-            placeholder="e.g. Los Angeles"
-            value="{{ request('location') }}"
-          />
+          <input type="text" name="location" id="location" placeholder="e.g. Los Angeles" value="{{ request('location') }}">
         </div>
-
+      
         <!-- Building Age -->
         <div class="filter-item">
           <label for="age">Building Age</label>
@@ -131,7 +122,7 @@
             <option value="21+" {{ request('age') == "21+" ? 'selected' : '' }}>21+ years</option>
           </select>
         </div>
-
+      
         <!-- Rooms -->
         <div class="filter-item">
           <label for="rooms">Rooms</label>
@@ -144,11 +135,22 @@
           </select>
         </div>
 
+        <!-- Time Posted -->
+        <div class="filter-item">
+          <label for="time_posted">Date Posted</label>
+          <select name="time_posted" id="time_posted">
+            <option value="" {{ request('time_posted') == "" ? 'selected' : '' }}>Any</option>
+            <option value="24h" {{ request('time_posted') == "24h" ? 'selected' : '' }}>Past 24 Hours</option>
+            <option value="week" {{ request('time_posted') == "week" ? 'selected' : '' }}>Past Week</option>
+            <option value="month" {{ request('time_posted') == "month" ? 'selected' : '' }}>Past Month</option>
+            <option value="year" {{ request('time_posted') == "year" ? 'selected' : '' }}>Past Year</option>
+          </select>
+        </div>
+      
         <!-- Filter button -->
-        <button type="submit" class="filter-btn">
-          Filter
-        </button>
+        <button type="submit" class="filter-btn">Filter</button>
       </form>
+      
     </div>
   </section>
 
@@ -172,18 +174,18 @@
               />
             </div>
             <div class="card-content">
-              <h3>{{ $variable->street }} ({{ $variable->city }})</h3>
               <p class="price">${{ number_format($variable->price, 2) }}</p>
+              
               <div class="key-info">
                 <span><i class="fa-solid fa-ruler"></i> {{ $variable->size ?? 'N/A' }} sq ft</span>
                 <span><i class="fa-solid fa-bed"></i> {{ $variable->rooms ?? 'N/A' }} Rooms</span>
                 <span><i class="fa-solid fa-bath"></i> {{ $variable->bathrooms ?? 'N/A' }} Bathrooms</span>
                 <span><i class="fa-solid fa-calendar-days"></i> {{ $variable->age ?? 'N/A' }} years</span>
+                 <p class="posted-time">Posted {{ $variable->posted_time }}</p>
               </div>
-              @if($variable->phone)
-                <p><strong>Contact Phone:</strong> {{ $variable->phone }}</p>
-              @endif
-
+              
+              <h3><span><i class="fas fa-map-marker-alt"></i>&nbsp{{ $variable->street }} ({{ $variable->city }})</h3>
+            
               <div class="card-actions" style="margin-top: 10px; text-align: center;">
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
                 @auth
@@ -199,6 +201,7 @@
                 @endauth
               </div>
             </div>
+            
           </div>
         @endforeach
       </div>

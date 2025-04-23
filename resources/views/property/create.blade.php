@@ -6,7 +6,7 @@
 </head>
 <body>
     <header>
-        </header>
+    </header>
 
     <main class="container" style="padding: 40px;">
         <div class="card form-card">
@@ -62,6 +62,33 @@
                     <input type="number" name="bathrooms" id="bathrooms" value="{{ old('bathrooms') }}" placeholder="e.g. 2">
                 </div>
 
+                <div class="form-group features-checkboxes">
+                    <label>Features</label>
+                    <div class="checkboxes-wrapper">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="elevator" id="elevator" value="1" {{ old('elevator') ? 'checked' : '' }}>
+                            <label for="elevator">Elevator</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="balcony" id="balcony" value="1" {{ old('balcony') ? 'checked' : '' }}>
+                            <label for="balcony">Balcony</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="parking" id="parking" value="1" {{ old('parking') ? 'checked' : '' }}>
+                            <label for="parking">Parking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="private_garden" id="private_garden" value="1" {{ old('private_garden') ? 'checked' : '' }}>
+                            <label for="private_garden">Private Garden</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="central_air_conditioning" id="central_air_conditioning" value="1" {{ old('central_air_conditioning') ? 'checked' : '' }}>
+                            <label for="central_air_conditioning">Central Air Conditioning</label>
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="form-group">
                     <label for="phone">Contact Phone</label>
                     <input type="text" name="phone" id="phone" placeholder="e.g. +1 555-555-5555" value="{{ old('phone') }}">
@@ -79,7 +106,7 @@
     </main>
 
     <footer>
-        </footer>
+    </footer>
     <script>
         document.getElementById('images').addEventListener('change', function() {
             const files = this.files;
@@ -87,7 +114,7 @@
             for (let i = 0; i < files.length; i++) {
                 names += files[i].name + ', ';
             }
-            document.getElementById('image-names').innerText = names.slice(0, -2); // Remove last comma and space
+            document.getElementById('image-names').innerText = names.slice(0, -2);
         });
     </script>
 </body>

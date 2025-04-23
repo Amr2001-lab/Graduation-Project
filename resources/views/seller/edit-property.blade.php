@@ -84,6 +84,33 @@
                     <input type="number" id="bathrooms" name="bathrooms" value="{{ $apartment->bathrooms }}" required>
                 </div>
 
+                <!-- New Features Checkboxes (Horizontal Row) -->
+                <div class="form-group features-checkboxes">
+                    <label>Features (Optional)</label>
+                    <div class="checkboxes-wrapper">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="elevator" id="elevator" value="1" {{ $apartment->elevator ? 'checked' : '' }}>
+                            <label for="elevator">Elevator</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="balcony" id="balcony" value="1" {{ $apartment->balcony ? 'checked' : '' }}>
+                            <label for="balcony">Balcony</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="parking" id="parking" value="1" {{ $apartment->parking ? 'checked' : '' }}>
+                            <label for="parking">Parking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="private_garden" id="private_garden" value="1" {{ $apartment->private_garden ? 'checked' : '' }}>
+                            <label for="private_garden">Private Garden</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="central_air_conditioning" id="central_air_conditioning" value="1" {{ $apartment->central_air_conditioning ? 'checked' : '' }}>
+                            <label for="central_air_conditioning">Central Air Conditioning</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="phone">Seller Contact Phone (Optional)</label>
                     <input type="text" id="phone" name="phone" value="{{ $apartment->phone }}">

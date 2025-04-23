@@ -12,6 +12,15 @@ class Apartment extends Model
 
     protected $table = 'apartment';
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'elevator' => 'boolean',
+        'parking' => 'boolean',
+        'private_garden' => 'boolean',
+        'central_air_conditioning' => 'boolean',
+    ];
+
     protected $fillable = [
         'seller_id',
         'size',
@@ -22,7 +31,10 @@ class Apartment extends Model
         'rooms',
         'bathrooms',
         'phone',
-
+        'elevator',
+        'parking',
+        'private_garden',
+        'central_air_conditioning',
     ];
 
     public function bookmarks()
@@ -43,5 +55,10 @@ class Apartment extends Model
     public function getMainImageAttribute()
     {
         return $this->images()->first();
+    }
+
+    public function getPostedTimeAttribute()
+    {
+        return $this->created_at->diffForHumans();
     }
 }

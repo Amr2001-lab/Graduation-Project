@@ -38,8 +38,15 @@ class PropertyController extends Controller
             'images.*'  => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $validated['elevator'] = $request->has('elevator') ? 1 : 0;
+        $validated['balcony'] = $request->has('balcony') ? 1 : 0;
+        $validated['parking'] = $request->has('parking') ? 1 : 0;
+        $validated['private_garden'] = $request->has('private_garden') ? 1 : 0;
+        $validated['central_air_conditioning'] = $request->has('central_air_conditioning') ? 1 : 0;
+
         $validated['seller_id'] = auth()->id();
         $apartment = Apartment::create($validated);
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $imageFile) {
                 $originalFilename = $imageFile->getClientOriginalName();

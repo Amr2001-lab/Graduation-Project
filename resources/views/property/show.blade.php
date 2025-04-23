@@ -51,7 +51,6 @@
     </div>
   </header>
 
-  <!-- Hero & Gallery Slider Section with Overlay -->
   <section class="gallery-slider property-hero" aria-label="Property Gallery">
     <div class="swiper-container gallery-top">
       <div class="swiper-wrapper">
@@ -83,7 +82,6 @@
       </div>
     @endif
 
-    <!-- Hero Overlay: property title and price -->
     <div class="hero-overlay">
       <div class="hero-content">
         <h1>{{ $property->city }} Apartment</h1>
@@ -92,7 +90,6 @@
     </div>
   </section>
 
-  <!-- Main Property Details Section -->
   <main class="container property-details-page">
     <div class="property-details-container">
       <div class="property-summary">
@@ -104,12 +101,31 @@
           <span><i class="fas fa-bed"></i> {{ $property->rooms }} Rooms</span>
           <span><i class="fas fa-bath"></i> {{ $property->bathrooms }} Bathrooms</span>
         </div>
+        <p class="exact-date">Posted on: {{ $property->created_at->format('F j, Y') }}</p>
+      </div>
       </div>
 
       <div class="property-more-details">
         <h3>More Details</h3>
         <ul>
-          <li><strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}</li>
+          <li>
+            <strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}
+          </li>
+          <li>
+            <i class="fa-solid fa-building"></i> Elevator: {{ $property->elevator ? 'Yes' : 'No' }}
+          </li>
+          <li>
+            <i class="fa-solid fa-door-open"></i> Balcony: {{ $property->balcony ? 'Yes' : 'No' }}
+          </li>
+          <li>
+            <i class="fa-solid fa-car"></i> Parking: {{ $property->parking ? 'Yes' : 'No' }}
+          </li>
+          <li>
+            <i class="fa-solid fa-tree"></i> Private Garden: {{ $property->private_garden ? 'Yes' : 'No' }}
+          </li>
+          <li>
+            <i class="fa-solid fa-snowflake"></i> Central Air Conditioning: {{ $property->central_air_conditioning ? 'Yes' : 'No' }}
+          </li>
         </ul>
       </div>
 
@@ -124,20 +140,71 @@
                 @method('DELETE')
                 <button type="submit" class="button danger" onclick="return confirm('Are you sure you want to delete this property?')">Delete</button>
               </form>
+            @else
+              <a id="openInquiryModal" href="#" onclick="return false;" class="button primary">Contact Seller</a>
             @endif
+          @else
+            <a id="openInquiryModal" href="#" onclick="return false;" class="button primary">Contact Seller</a>
           @endauth
         </div>
       </div>
     </div>
   </main>
-  
+
   <footer>
     <div class="container">
       <p>&copy; {{ date('Y') }} Real Estate Listings. All Rights Reserved.</p>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <div class="modal-overlay" id="inquiryModal">
+    <div class="modal">
+      <span class="modal-close" id="closeInquiryModal">&times;</span>
+      <div class="modal-content">
+        <h2>Contact Seller</h2>
+        <form method="POST" action="{{ route('inquiry.store', $property->id) }}">
+          @csrf
+
+          @auth
+            <div class="form-group">
+              <label for="contact_name">Your Name <span style="color: red;">*</span></label>
+              <input type="text" name="name" id="contact_name" value="{{ Auth::user()->name }}" required>
+            </div>
+
+            <div class="form-group">
+              <label for="contact_email">Your Email <span style="color: red;">*</span></label>
+              <input type="email" name="email" id="contact_email" value="{{ Auth::user()->email }}" required>
+            </div>
+          @else
+            <div class="form-group">
+              <label for="contact_name">Your Name <span style="color: red;">*</span></label>
+              <input type="text" name="name" id="contact_name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="contact_email">Your Email <span style="color: red;">*</span></label>
+              <input type="email" name="email" id="contact_email" required>
+            </div>
+          @endauth
+
+          <div class="form-group">
+            <label for="contact_phone">Phone</label>
+            <input type="text" name="phone" id="contact_phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contact_message">Message <span style="color: red;">*</span></label>
+            <textarea name="message" id="contact_message" rows="4" required>
+I am interested in property ID: {{ $property->id }}. Please provide more information.
+            </textarea>
+          </div>
+
+          <button type="submit" class="button primary">Send Inquiry</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="{{ asset('vendor/swiper/swiper-bundle.min.js') }}"></script>
   <script src="{{ asset('script.js') }}"></script>
 

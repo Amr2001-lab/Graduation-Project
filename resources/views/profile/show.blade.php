@@ -21,10 +21,7 @@
     <div class="header-container">
       <div class="logo">
         <a href="/">
-          <img
-            src="https://www.creativefabrica.com/wp-content/uploads/2021/03/15/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg"
-            alt="Real Estate Logo"
-          />
+          <img src="storage/Images/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg" alt="Real Estate Logo">
         </a>
       </div>
   

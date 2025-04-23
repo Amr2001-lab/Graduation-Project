@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Apartment::class, 'bookmarks')->withTimestamps();
     }
+
+    public function inquiries()
+    {
+        return $this->hasMany(Inquiry::class, 'buyer_id');
+    }
 }

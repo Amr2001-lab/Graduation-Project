@@ -41,3 +41,5 @@ Route::put('/properties/{apartment}/update', [SellerController::class, 'update']
 Route::delete('/seller/images/{image}', [SellerController::class, 'destroyImage'])->middleware('auth')->name('seller.images.destroy');
 
 Route::delete('/seller/properties/{apartment}', [SellerController::class, 'destroy'])->name('seller.properties.destroy');
+
+Route::post('/inquiry/{id}/email', [InquiryController::class, 'store'])->name('inquiry.store')->middleware('auth');
