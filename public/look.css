@@ -1029,24 +1029,19 @@ footer {
 
 /* property.css */
 
-/* Main slider styles */
-.gallery-top {
-  width: 100%;
-  height: 500px;
-  margin: 20px auto;
+/* --- FORCE the main slider to be taller and hide scroll-bars --- */
+.gallery-top{
+  height:600px !important;        /* !important overrides earlier 500px */
 }
-.gallery-top .swiper-slide {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #eee;
+.gallery-top .swiper-slide{
+  overflow:hidden !important;     /* no scroll-bars */
 }
-.gallery-top .swiper-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.gallery-top .swiper-slide iframe{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover;               /* stretch exactly like the photos */
 }
+
 
 /* Thumbnails styling */
 .gallery-thumbs {
@@ -1056,20 +1051,24 @@ footer {
   margin: 0 auto;
   width: 90%;
 }
+
 .gallery-thumbs .swiper-slide {
   height: 100%;
   opacity: 0.4;
   cursor: pointer;
   overflow: hidden;
 }
+
 .gallery-thumbs .swiper-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .gallery-thumbs .swiper-slide-thumb-active {
   opacity: 1;
 }
+
 
 .property-details-page .property-details-container {
   background-color: #fff;
@@ -1416,5 +1415,29 @@ footer {
 .features-checkboxes .checkbox-item input[type="checkbox"]:focus {
   outline: none;
   box-shadow: none;
+}
+
+.unity-tour {
+  margin: 40px 0;
+}
+
+.unity-tour h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+
+/* final overrides – put at the very end of look.css */
+.gallery-top          { height: 600px !important; overflow:hidden!important; }
+.gallery-top .swiper-wrapper{ height:100%!important; }
+.gallery-top .swiper-slide { overflow:hidden!important; }
+
+/* show the whole tour, even if that leaves blank bands */
+.gallery-top .swiper-slide iframe{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;   /* ← was cover */
+    background:#000;                /* letter-box colour */
 }
 

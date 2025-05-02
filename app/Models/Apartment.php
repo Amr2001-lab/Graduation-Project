@@ -35,6 +35,7 @@ class Apartment extends Model
         'parking',
         'private_garden',
         'central_air_conditioning',
+        'virtual_tour_path',
     ];
 
     public function bookmarks()

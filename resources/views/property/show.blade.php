@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,15 +55,19 @@
   <section class="gallery-slider property-hero" aria-label="Property Gallery">
     <div class="swiper-container gallery-top">
       <div class="swiper-wrapper">
-        @if(isset($property->images) && count($property->images) > 0)
-          @foreach($property->images as $image)
-            <div class="swiper-slide">
-              <img src="{{ asset('storage/Images/' . $image->image_url) }}" alt="Image of {{ $property->city }} Apartment" />
-            </div>
-          @endforeach
-        @else
+        @foreach($property->images as $image)
           <div class="swiper-slide">
-            <img src="{{ asset('storage/Images/' . $property->image_url) }}" alt="Image of {{ $property->city }} Apartment" />
+            <img src="{{ asset('storage/Images/' . $image->image_url) }}" alt="Image of {{ $property->city }} Apartment" />
+          </div>
+        @endforeach
+
+        @if($property->virtual_tour_path)
+          <div class="swiper-slide swiper-no-swiping">
+            <iframe
+              src="{{ asset(rtrim($property->virtual_tour_path, '/').'/index.html') }}"
+              scrolling="no"
+              style="width:100%; height:600px; border:none;">
+          </iframe>
           </div>
         @endif
       </div>
@@ -70,17 +75,22 @@
       <div class="swiper-button-prev" aria-label="Previous Slide"></div>
       <div class="swiper-pagination"></div>
     </div>
-    @if(isset($property->images) && count($property->images) > 0)
-      <div class="swiper-container gallery-thumbs" aria-label="Property Thumbnails">
-        <div class="swiper-wrapper">
-          @foreach($property->images as $image)
-            <div class="swiper-slide">
-              <img src="{{ asset('storage/Images/' . $image->image_url) }}" alt="Thumbnail of {{ $property->city }} Apartment" />
-            </div>
-          @endforeach
-        </div>
+
+    <div class="swiper-container gallery-thumbs" aria-label="Property Thumbnails">
+      <div class="swiper-wrapper">
+        @foreach($property->images as $image)
+          <div class="swiper-slide">
+            <img src="{{ asset('storage/Images/' . $image->image_url) }}" alt="Thumbnail of {{ $property->city }} Apartment" />
+          </div>
+        @endforeach
+
+        @if($property->virtual_tour_path)
+          <div class="swiper-slide">
+            <span style="display:flex;align-items:center;justify-content:center;height:100%;font-weight:bold;">Tour</span>
+          </div>
+        @endif
       </div>
-    @endif
+    </div>
 
     <div class="hero-overlay">
       <div class="hero-content">
@@ -108,24 +118,12 @@
       <div class="property-more-details">
         <h3>More Details</h3>
         <ul>
-          <li>
-            <strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}
-          </li>
-          <li>
-            <i class="fa-solid fa-building"></i> Elevator: {{ $property->elevator ? 'Yes' : 'No' }}
-          </li>
-          <li>
-            <i class="fa-solid fa-door-open"></i> Balcony: {{ $property->balcony ? 'Yes' : 'No' }}
-          </li>
-          <li>
-            <i class="fa-solid fa-car"></i> Parking: {{ $property->parking ? 'Yes' : 'No' }}
-          </li>
-          <li>
-            <i class="fa-solid fa-tree"></i> Private Garden: {{ $property->private_garden ? 'Yes' : 'No' }}
-          </li>
-          <li>
-            <i class="fa-solid fa-snowflake"></i> Central Air Conditioning: {{ $property->central_air_conditioning ? 'Yes' : 'No' }}
-          </li>
+          <li><strong>Seller Contact:</strong> {{ $property->phone ?? 'Not Provided' }}</li>
+          <li><i class="fa-solid fa-building"></i> Elevator: {{ $property->elevator ? 'Yes' : 'No' }}</li>
+          <li><i class="fa-solid fa-door-open"></i> Balcony: {{ $property->balcony ? 'Yes' : 'No' }}</li>
+          <li><i class="fa-solid fa-car"></i> Parking: {{ $property->parking ? 'Yes' : 'No' }}</li>
+          <li><i class="fa-solid fa-tree"></i> Private Garden: {{ $property->private_garden ? 'Yes' : 'No' }}</li>
+          <li><i class="fa-solid fa-snowflake"></i> Central Air Conditioning: {{ $property->central_air_conditioning ? 'Yes' : 'No' }}</li>
         </ul>
       </div>
 
@@ -170,7 +168,6 @@
               <label for="contact_name">Your Name <span style="color: red;">*</span></label>
               <input type="text" name="name" id="contact_name" value="{{ Auth::user()->name }}" required>
             </div>
-
             <div class="form-group">
               <label for="contact_email">Your Email <span style="color: red;">*</span></label>
               <input type="email" name="email" id="contact_email" value="{{ Auth::user()->email }}" required>
@@ -180,7 +177,6 @@
               <label for="contact_name">Your Name <span style="color: red;">*</span></label>
               <input type="text" name="name" id="contact_name" required>
             </div>
-
             <div class="form-group">
               <label for="contact_email">Your Email <span style="color: red;">*</span></label>
               <input type="email" name="email" id="contact_email" required>
@@ -207,6 +203,6 @@ I am interested in property ID: {{ $property->id }}. Please provide more informa
 
   <script src="{{ asset('vendor/swiper/swiper-bundle.min.js') }}"></script>
   <script src="{{ asset('script.js') }}"></script>
-
 </body>
 </html>
+```
