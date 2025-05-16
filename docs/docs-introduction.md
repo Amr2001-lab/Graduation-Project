@@ -51,5 +51,3 @@ This platform centralises listings, standardizes information, and enables buyers
 | Data      | MySQL 8 (`real_estate` schema)              |
 | Hosting   | Apache (XAMPP)                              |
 | Auth      | Custom session guard (`web`)                |
-
-> Detailed setup instructions and database schema are in the **Developer Guide** and **Database & Connectivity** pages.

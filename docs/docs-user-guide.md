@@ -58,12 +58,11 @@ This guide explains how **buyers** and **sellers** use the Real-Estate Platform�
 
 ### 4. Common Actions
 
-| Feature            | Who can use it   | Notes                                                                |
-| ------------------ | ---------------- | -------------------------------------------------------------------- |
-| **Profile**        | Buyers & Sellers | Shows personal info plus bookmarks (buyer) or listings (seller).     |
-| **Search**         | All users        | Live search bar (top-right) finds listings by address, city, price.  |
-| **Password Reset** | Buyers & Sellers | On Login page, click **Forgot Password?** – a reset link is emailed. |
-| **Logout**         | Buyers & Sellers | Top-right dropdown → **Logout** clears the session cookie.           |
+| Feature     | Who can use it   | Notes                                                               |
+| ----------- | ---------------- | ------------------------------------------------------------------- |
+| **Profile** | Buyers & Sellers | Shows personal info plus bookmarks (buyer) or listings (seller).    |
+| **Search**  | All users        | Live search bar (top-right) finds listings by address, city, price. |
+| **Logout**  | Buyers & Sellers | Top-right dropdown → **Logout** clears the session cookie.          |
 
 ***
 
