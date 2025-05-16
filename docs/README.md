@@ -36,13 +36,3 @@ Sellers list apartments or houses for sale; buyers search, bookmark, and inquire
 
 ***
 
-### Local Setup
-
-1. **Start XAMPP**
-   * Apache → Start
-   * MySQL → Start
-2.  **Create database**
-
-    ```bash
-    mysql -u root -e "CREATE DATABASE real_estate;"
-    ```
