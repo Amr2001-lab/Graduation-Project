@@ -86,6 +86,38 @@ All mutating actions are behind the `auth` middleware; controllers either declar
 
 ***
 
+### Database Schema & Relationships
+
+![](.gitbook/assets/real_estate.png)
+
+The ER diagram above visualises both **application tables** and **Laravel framework support tables** (sessions, jobs, cache, etc.). The dashed lines show foreign‑key relationships used by Eloquent.
+
+#### Core application relationships
+
+* **users ⇢ apartments** — _one‑to‑many._ A seller (`users.id`) owns many listings (`apartments.seller_id`).\
+  ↳ In Eloquent: `User hasMany Apartment`, `Apartment belongsTo User`.
+* **apartments ⇢ apartment\_images** — _one‑to‑many._ Each listing can have many images (`apartment_images.apartment_id`).
+* **users ⇢ bookmarks** — _one‑to‑many._ Each bookmark row links a user to a listing they favourited.
+* **apartments ⇢ bookmarks** — _one‑to‑many._ The same `bookmarks` table also points back to the property (`bookmarks.apartment_id`).
+* **users ↔︎ apartments (through bookmarks)** — _many‑to‑many convenience._ Laravel can expose this via `User belongsToMany Apartment through bookmarks` to fetch all favourited listings for a user, and `Apartment belongsToMany User` to fetch all users who bookmarked it.
+* **users ⇢ inquiries** — _one‑to‑many._ A buyer (`users.id`) can send many inquiries; stored in `inquiries.buyer_id`.
+* **apartments ⇢ inquiries** — _one‑to‑many._ A listing can receive multiple inquiries (`inquiries.apartment_id`). Sellers fetch all questions about their properties through this link.
+* **average\_prices** — stand‑alone reference table used by the price‑estimator service; no direct FKs.
+
+#### Framework support tables
+
+| Table                                  | Purpose                                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **sessions**                           | Stores session data when `SESSION_DRIVER=database` (allows horizontal scaling).                  |
+| **password\_reset\_tokens**            | Built‑in password‑reset feature.                                                                 |
+| **jobs / job\_batches / failed\_jobs** | Database‑backed queue; `job_batches` coordinates chunked batches, `failed_jobs` stores failures. |
+| **cache / cache\_locks**               | Optional DB cache backend.                                                                       |
+| **migrations**                         | Tracks which migrations have run.                                                                |
+
+These tables are created automatically by Laravel when the corresponding features are enabled (queue, cache, session). They do not appear in Eloquent models unless you extend them.
+
+***
+
 ### Views (Blade Templates)
 
 All UI screens are Blade templates under `resources/views`.\
@@ -111,7 +143,9 @@ File path and role of each template:
 
 * **Local stack:** XAMPP (Apache + MySQL 8) · PHP 8.2 · Laravel 10.\
   Clone → `composer install` → configure `.env` → `php artisan migrate`.
-* **Database:** runs in schema `real_estate`; migrations create core + framework tables (`jobs`, `cache`, etc.) as needed.
+* **Database:** runs in schema `real_estate`; migrations create core + framework tables (jobs, cache, etc.) as needed.
 * **Sessions & auth:** default `web` guard; `SESSION_DRIVER=database` so sessions scale horizontally.
 * **Queues / cache (optional):** `QUEUE_CONNECTION=database`, `CACHE_STORE=database` create `jobs`, `failed_jobs`, `cache`, `cache_locks` tables.
 * **Tools:** MySQL Workbench for queries / diagrams; Laravel Pint + PHP‑Stan for code‑quality (CI).
+
+This completes the system‑design documentation. Each H2 section is a top‑level entry in GitBook’s right‑hand ToC.
