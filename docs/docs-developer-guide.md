@@ -168,7 +168,7 @@ This command reads `src/composer.json` and downloads dependencies into the `src/
 
 ***
 
-### 4 Environment Configuration
+### 5. Environment Configuration
 
 Navigate back up to the project root directory (`Graduation-Project`). Copy the example environment file to create your local configuration file.
 
@@ -211,7 +211,7 @@ This command adds or updates the `APP_KEY` variable in your `src/.env` file.
 
 ***
 
-### 4. Database Setup
+### 6. Database Setup
 
 You can prepare the database by either running Laravel's built-in migrations and seeders or by importing a provided SQL dump file. Choose **Option A** or **Option B**:
 
@@ -241,7 +241,7 @@ This will create all necessary tables and populate initial data.
 
 ***
 
-### 5. Build Front-end Assets (optional)
+### 7. Build Front-end Assets (optional)
 
 This step is only necessary if you installed Node.js/npm (Step 1.2) and plan to modify the project's front-end source files (like those in `resources/js` or `resources/css`) that use tools like Tailwind CSS. If you don't need to modify the frontend, you can skip this as pre-built assets are committed.
 
@@ -275,7 +275,7 @@ The output assets will be placed in the `src/public/build/` directory.
 
 ***
 
-### 6. Serve the Application
+### 8. Serve the Application
 
 The method to access the running application depends on your setup.
 
@@ -311,7 +311,7 @@ The terminal running the command will display server logs. Press `Ctrl + C` to s
 
 ***
 
-### 8 Troubleshooting
+### 9. Troubleshooting
 
 | Issue                                                      | Resolution                                                                                                                                                                                                                                                                            |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
