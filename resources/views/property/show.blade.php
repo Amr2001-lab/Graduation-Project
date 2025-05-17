@@ -201,8 +201,12 @@ I am interested in property ID: {{ $property->id }}. Please provide more informa
     </div>
   </div>
 
+  <script>
+    window.flashMessages = @json(session()->only(['message','success','error']));
+  </script>
   <script src="{{ asset('vendor/swiper/swiper-bundle.min.js') }}"></script>
   <script src="{{ asset('script.js') }}"></script>
+  
 </body>
 </html>
 ```

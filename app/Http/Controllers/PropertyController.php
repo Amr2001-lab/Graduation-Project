@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Apartment;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use ZipArchive;
@@ -15,6 +14,8 @@ class PropertyController extends Controller
     {
         $this->middleware('auth')->except('show');
     }
+
+    /* ---------- Show & Create Views ---------- */
 
     public function show($id)
     {
@@ -27,75 +28,83 @@ class PropertyController extends Controller
         return view('property.create');
     }
 
+    /* ---------- Store (create new) ---------- */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'size'     => 'required|integer',
-            'price'    => 'required|numeric',
-            'street'   => 'required|string|max:255',
-            'city'     => 'required|string|max:255',
-            'age'      => 'required|integer',
-            'rooms'    => 'required|integer',
-            'bathrooms'=> 'required|integer',
-            'phone'    => 'required|string|max:20',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'tour_zip' => 'required|file|mimes:zip',
+            'size'      => 'required|integer',
+            'price'     => 'required|numeric',
+            'street'    => 'required|string|max:255',
+            'city'      => 'required|string|max:255',
+            'age'       => 'required|integer',
+            'rooms'     => 'required|integer',
+            'bathrooms' => 'required|integer',
+            'phone'     => 'required|string|max:20',
+            'images'    => 'required|array',
+            'images.*'  => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'tour_zip'  => 'nullable|file|mimes:zip',
         ]);
 
-        $validated['elevator']                 = $request->has('elevator') ? 1 : 0;
-        $validated['balcony']                  = $request->has('balcony') ? 1 : 0;
-        $validated['parking']                  = $request->has('parking') ? 1 : 0;
-        $validated['private_garden']           = $request->has('private_garden') ? 1 : 0;
-        $validated['central_air_conditioning'] = $request->has('central_air_conditioning') ? 1 : 0;
-        $validated['seller_id']                = auth()->id();
+        // Checkbox flags + seller
+        $validated += [
+            'elevator'                 => $request->has('elevator'),
+            'balcony'                  => $request->has('balcony'),
+            'parking'                  => $request->has('parking'),
+            'private_garden'           => $request->has('private_garden'),
+            'central_air_conditioning' => $request->has('central_air_conditioning'),
+            'seller_id'                => auth()->id(),
+        ];
 
         $apartment = Apartment::create($validated);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $name = $file->getClientOriginalName();
-                $file->storeAs('Images', $name, 'public');
-                $apartment->images()->create(['image_url' => $name]);
+        /* — Store images — */
+        foreach ($request->file('images') as $file) {
+            $name = $file->getClientOriginalName();
+            $file->storeAs('Images', $name, 'public');
+            $apartment->images()->create(['image_url' => $name]);
+        }
+
+        /* — Optional virtual-tour ZIP — */
+        if ($request->hasFile('tour_zip')) {
+            $tmpPath  = $request->file('tour_zip')->store('tmp', 'local');
+            $fullPath = Storage::disk('local')->path($tmpPath);
+
+            $targetDir = public_path("tours/{$apartment->id}");
+            File::ensureDirectoryExists($targetDir, 0755, true);
+
+            $zip = new ZipArchive;
+            if ($zip->open($fullPath) === true) {
+                $zip->extractTo($targetDir);
+                $zip->close();
             }
+
+            Storage::disk('local')->delete($tmpPath);
+            $apartment->update(['virtual_tour_path' => "tours/{$apartment->id}"]);
         }
 
-        $zipFile = $request->file('tour_zip');
-        $tmpPath = $zipFile->store('tmp', 'local');
-        $fullPath = Storage::disk('local')->path($tmpPath);
-
-        $targetDir = public_path("tours/{$apartment->id}");
-        if (! is_dir($targetDir)) {
-            mkdir($targetDir, 0755, true);
-        }
-
-        $zip = new ZipArchive;
-        if ($zip->open($fullPath) === true) {
-            $zip->extractTo($targetDir);
-            $zip->close();
-        }
-        Storage::disk('local')->delete($tmpPath);
-
-        $apartment->update(['virtual_tour_path' => "tours/{$apartment->id}"]);
-
-        return redirect()->route('property.show', $apartment->id)
-                         ->with('message', 'Property created successfully.');
+        return redirect()
+               ->route('property.show', $apartment->id)
+               ->with('message', 'Property created successfully.');
     }
+
+    /* ---------- Update (edit existing) ---------- */
 
     public function update(Request $request, $id)
     {
         $apartment = Apartment::findOrFail($id);
 
         $data = $request->validate([
-            'size'     => 'required|integer',
-            'price'    => 'required|numeric',
-            'street'   => 'required|string|max:255',
-            'city'     => 'required|string|max:255',
-            'age'      => 'required|integer',
-            'rooms'    => 'required|integer',
-            'bathrooms'=> 'required|integer',
-            'phone'    => 'nullable|string|max:20',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'tour_zip' => 'nullable|file|mimes:zip',
+            'size'      => 'required|integer',
+            'price'     => 'required|numeric',
+            'street'    => 'required|string|max:255',
+            'city'      => 'required|string|max:255',
+            'age'       => 'required|integer',
+            'rooms'     => 'required|integer',
+            'bathrooms' => 'required|integer',
+            'phone'     => 'nullable|string|max:20',
+            'images.*'  => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'tour_zip'  => 'nullable|file|mimes:zip',
         ]);
 
         $data['elevator']                 = $request->has('elevator');
@@ -120,14 +129,11 @@ class PropertyController extends Controller
                 File::deleteDirectory($oldDir);
             }
 
-            $tmpPath = $request->file('tour_zip')->store('tmp', 'local');
+            $tmpPath  = $request->file('tour_zip')->store('tmp', 'local');
             $fullPath = Storage::disk('local')->path($tmpPath);
 
-        
             $targetDir = public_path("tours/{$apartment->id}");
-            if (! is_dir($targetDir)) {
-                mkdir($targetDir, 0755, true);
-            }
+            File::ensureDirectoryExists($targetDir, 0755, true);
 
             $zip = new ZipArchive;
             if ($zip->open($fullPath) === true) {
@@ -140,9 +146,11 @@ class PropertyController extends Controller
         }
 
         return redirect()
-            ->route('property.show', $apartment->id)
-            ->with('message', 'Property updated successfully.');
+               ->route('property.show', $apartment->id)
+               ->with('message', 'Property updated successfully.');
     }
+
+    /* ---------- Remove tour ---------- */
 
     public function removeTour($id)
     {
@@ -153,7 +161,8 @@ class PropertyController extends Controller
         }
         $apartment->update(['virtual_tour_path' => null]);
 
-        return redirect()->route('seller.properties.edit', $apartment->id)
-                         ->with('message', 'Virtual tour removed.');
+        return redirect()
+               ->route('seller.properties.edit', $apartment->id)
+               ->with('message', 'Virtual tour removed.');
     }
 }

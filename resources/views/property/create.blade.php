@@ -1,4 +1,3 @@
-{{-- resources/views/property/create.blade.php --}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,17 +6,11 @@
 </head>
 <body>
     <header>
-        <!-- (your header/nav here) -->
     </header>
 
     <main class="container" style="padding: 40px;">
         <div class="card form-card">
             <h1 class="form-heading">List a New Property</h1>
-
-            @if(session('message'))
-                <p class="success-message">{{ session('message') }}</p>
-            @endif
-
             @if($errors->any())
                 <div class="error-message">
                     @foreach($errors->all() as $error)
@@ -197,11 +190,9 @@
     </main>
 
     <footer>
-        <!-- (your footer here) -->
     </footer>
 
     <script>
-      // show selected image-names preview
       document.getElementById('images').addEventListener('change', function() {
         const names = Array.from(this.files).map(f => f.name).join(', ');
         document.getElementById('image-names').innerText = names ? `Selected: ${names}` : '';
