@@ -1441,3 +1441,29 @@ footer {
     background:#000;                /* letter-box colour */
 }
 
+/* ────────────────────────────────────────────────────────────────── *
+   HERO SLIDER FULL-BLEED OVERRIDES
+   Applies to the property-details “gallery-slider property-hero” section
+ * ────────────────────────────────────────────────────────────────── */
+.property-hero {
+  /* match your desired banner height */
+  height: 600px !important;
+  overflow: hidden !important;
+}
+
+.property-hero .gallery-top,
+.property-hero .gallery-top .swiper-wrapper,
+.property-hero .gallery-top .swiper-slide {
+  /* force all slides & wrapper to fill the container */
+  height: 100% !important;
+}
+
+.property-hero .gallery-top .swiper-slide img,
+.property-hero .gallery-top .swiper-slide iframe {
+  /* stretch & crop to fill exactly */
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+

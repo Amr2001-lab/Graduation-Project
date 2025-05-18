@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Bookmark;   // Include Bookmark model
-use App\Models\Apartment;  // Include Apartment model if needed
+use App\Models\Bookmark;  
+use App\Models\Apartment; 
 
 class ProfileController extends Controller
 {
     public function show()
     {
         $user = Auth::user();
-        // Eager load the apartment relationship on bookmarks
         $bookmarks = $user->bookmarks()->with('apartment')->get();
         $properties = $user->properties;
         

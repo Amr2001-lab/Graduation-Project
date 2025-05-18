@@ -103,7 +103,7 @@ class PropertyController extends Controller
             'rooms'     => 'required|integer',
             'bathrooms' => 'required|integer',
             'phone'     => 'nullable|string|max:20',
-            'images.*'  => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*'  => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             'tour_zip'  => 'nullable|file|mimes:zip',
         ]);
 

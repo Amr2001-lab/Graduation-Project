@@ -149,7 +149,7 @@
         <div class="form-group">
           <label for="images">Add Property Images (multiple)</label>
           <input type="file" id="images" name="images[]" multiple accept="image/*">
-          <div id="selected-images-names" style="margin-top:0.5rem;"></div>
+          <div id="images-names" style="margin-top:0.5rem;"></div>
         </div>
 
         <button type="submit" class="nav-btn" style="margin-top:1.5rem;">Update Property</button>
