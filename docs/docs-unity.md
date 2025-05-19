@@ -62,7 +62,7 @@ Build an interactive VR tour that lets users click (or gaze) on hotspots to move
 1. **Window** → **Package Manager**
 2. Install **XR Plugin Management** and **XR Interaction Toolkit**
 
-![Figure 1 – Installing XR Plugin Management & XR Interaction Toolkit](https://www.gitbook.com/cdn-cgi/image/dpr=2,width=1024,onerror=redirect,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%2FMAvAo0QwMYDWyWa7JkCQ%2Fuploads%2FROKlxitUh1d80WRNYUIC%2Fimage6.png%3Falt%3Dmedia%26token%3Dac9dd702-e973-411e-9a0a-51ec89f46fcb)
+![Figure 1 – Installing XR Plugin Management & XR Interaction Toolkit](.gitbook/assets/image16.jpg)
 
 3. **Edit** → **Project Settings** → **XR Plug-in Management**
 4. Enable your platform loader (e.g., **Oculus**, **Windows XR**)
@@ -106,6 +106,8 @@ Build an interactive VR tour that lets users click (or gaze) on hotspots to move
 5. In **Inspector**, set **Target Scene**, **Entry Position**, **Entry Rotation**
 
 ![Figure 5 – Hotspot configuration in Inspector](https://www.gitbook.com/cdn-cgi/image/dpr=2,width=1024,onerror=redirect,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%2FMAvAo0QwMYDWyWa7JkCQ%2Fuploads%2FAg230hnxwawp7KZSjVZG%2Fimage4.png%3Falt%3Dmedia%26token%3Dbaf4628a-0069-4b52-9184-35f86267883a)
+
+<figure><img src=".gitbook/assets/image8.png" alt=""><figcaption></figcaption></figure>
 
 ***
 
@@ -160,8 +162,6 @@ public class TeleportToRoom : MonoBehaviour
 }
 ```
 
-![Figure 7 – TeleportToRoom.cs code in editor](https://www.gitbook.com/cdn-cgi/image/dpr=2,width=1024,onerror=redirect,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%2FMAvAo0QwMYDWyWa7JkCQ%2Fuploads%2FW4A5WAlJq2G8BNIlMifT%2Fimage12.png%3Falt%3Dmedia%26token%3D0e9d4b80-870d-4004-a5ff-f179186a938e)
-
 ***
 
 ### Building the Project
@@ -169,7 +169,7 @@ public class TeleportToRoom : MonoBehaviour
 1. **File** → **Build Settings**
 2. Add all VR scenes to **Scenes In Build**
 
-![Figure 8 – Scenes added to Build Settings](https://www.gitbook.com/cdn-cgi/image/dpr=2,width=1024,onerror=redirect,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%2FMAvAo0QwMYDWyWa7JkCQ%2Fuploads%2FKAs7eurNb3NpWzuWw3Y6%2Fimage9.png%3Falt%3Dmedia%26token%3Dc064bba2-857d-4965-89a3-fdece9bbb3b3)
+![Figure 8 – Scenes added to Build Settings](.gitbook/assets/image15.jpg)
 
 3. Select your target platform → click **Switch Platform**
 
