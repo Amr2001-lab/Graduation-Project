@@ -107,7 +107,7 @@ Build an interactive VR tour that lets users click (or gaze) on hotspots to move
 
 ![Figure 5 – Hotspot configuration in Inspector](https://www.gitbook.com/cdn-cgi/image/dpr=2,width=1024,onerror=redirect,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%2FMAvAo0QwMYDWyWa7JkCQ%2Fuploads%2FAg230hnxwawp7KZSjVZG%2Fimage4.png%3Falt%3Dmedia%26token%3Dbaf4628a-0069-4b52-9184-35f86267883a)
 
-<figure><img src=".gitbook/assets/image8.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image13.jpg" alt=""><figcaption></figcaption></figure>
 
 ***
 
