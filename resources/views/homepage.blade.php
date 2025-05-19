@@ -11,24 +11,25 @@
   <header>
     <div class="header-container">
       <div class="logo">
-        <a href="/">
+        <a href="{{ route('home') }}">
           <img src="storage/Images/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg" alt="Real Estate Logo">
         </a>
       </div>
-
       <nav class="main-nav">
         <ul class="nav-left">
-          <li><a href="#"><i class="fa-solid fa-house-chimney"></i> Buy</a></li>
-          <li><a href="#"><i class="fa-solid fa-handshake-angle"></i> Rent</a></li>
-          <li><a href="#"><i class="fa-solid fa-dollar-sign"></i> Sell</a></li>
-          <li><a href="#"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+          @auth
+            <li>
+              <a href="{{ route('property.create') }}">
+                <i class="fa-solid fa-plus-circle"></i> Add Listing
+              </a>
+            </li>
+          @endauth
         </ul>
-
         <ul class="nav-right">
           @auth
             <li>
               <a href="{{ route('estimate') }}" class="nav-btn">
-                <i class="fa-solid fa-chart-line"></i> Estimate Property
+                <i class="fa-solid fa-chart-line"></i> Price Estimator
               </a>
             </li>
           @endauth
@@ -92,7 +93,6 @@
   <section class="filters">
     <div class="container">
       <form id="filter-form" action="{{ route('home') }}" method="GET">
-        <!-- Price Range -->
         <div class="filter-item">
           <label for="price">Price Range</label>
           <select name="price" id="price">
@@ -104,14 +104,13 @@
             <option value="1000000-" {{ request('price') == "1000000-" ? 'selected' : '' }}>Over $1M</option>
           </select>
         </div>
-      
-        <!-- Location -->
+
         <div class="filter-item">
           <label for="location">Location</label>
           <input type="text" name="location" id="location" placeholder="e.g. Los Angeles" value="{{ request('location') }}">
         </div>
       
-        <!-- Building Age -->
+
         <div class="filter-item">
           <label for="age">Building Age</label>
           <select name="age" id="age">
@@ -122,8 +121,7 @@
             <option value="21+" {{ request('age') == "21+" ? 'selected' : '' }}>21+ years</option>
           </select>
         </div>
-      
-        <!-- Rooms -->
+
         <div class="filter-item">
           <label for="rooms">Rooms</label>
           <select name="rooms" id="rooms">
@@ -135,7 +133,6 @@
           </select>
         </div>
 
-        <!-- Time Posted -->
         <div class="filter-item">
           <label for="time_posted">Date Posted</label>
           <select name="time_posted" id="time_posted">
@@ -147,10 +144,9 @@
           </select>
         </div>
       
-        <!-- Filter button -->
+
         <button type="submit" class="filter-btn">Filter</button>
       </form>
-      
     </div>
   </section>
 
@@ -171,6 +167,7 @@
                       ? asset('storage/Images/' . optional($variable->images->first())->image_url)
                       : 'https://via.placeholder.com/400x300.png?text=No+Image'
                   ) }}"
+                alt="Property"
               />
             </div>
             <div class="card-content">
@@ -184,7 +181,7 @@
                  <p class="posted-time">Posted {{ $variable->posted_time }}</p>
               </div>
               
-              <h3><span><i class="fas fa-map-marker-alt"></i>&nbsp{{ $variable->street }} ({{ $variable->city }})</h3>
+              <h3><span><i class="fas fa-map-marker-alt"></i>&nbsp;{{ $variable->street }}, {{ $variable->city }}</h3>
             
               <div class="card-actions" style="margin-top: 10px; text-align: center;">
                 <a href="{{ route('property.show', $variable->id) }}" class="btn">View</a>
@@ -205,8 +202,6 @@
           </div>
         @endforeach
       </div>
-
-      <!-- Pagination -->
       <div id="pagination" class="pagination">
         <span class="pagination-text">Pages:</span>
         @if ($apartment->currentPage() > 1)

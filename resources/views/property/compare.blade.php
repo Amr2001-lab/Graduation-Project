@@ -9,7 +9,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <!-- Header -->
   <header>
     <div class="container header-container">
       <div class="logo">
@@ -19,21 +18,15 @@
       </div>
       <nav class="main-nav">
         <ul class="nav-left">
-          <li><a href="/buy">Buy</a></li>
-          <li><a href="/rent">Rent</a></li>
-          <li><a href="/sell">Sell</a></li>
-          <li><a href="/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="container compare-container">
     <h1 class="compare-heading">Compare Properties</h1>
     <p class="compare-subtext">Select a property to compare with:</p>
 
-    <!-- Search Form -->
     <form id="compare-search-form" class="compare-search" action="{{ route('search.index') }}" method="GET" autocomplete="off">
       <div class="search-input-wrapper">
         <input type="text" name="q" id="compare-search-input" placeholder="Type address or price">
@@ -41,19 +34,14 @@
           <i class="fas fa-search"></i> Search
         </button>
       </div>
-      <!-- Added results container for live search -->
       <div id="compare-search-results"></div>
     </form>
 
-    <!-- Comparison Grid -->
     <div class="compare-grid">
-      <!-- Primary Property -->
       <div class="compare-column">
         <h2 class="compare-column-title">Main Property</h2>
         @include('property._compareColumn', ['prop' => $property])
       </div>
-    
-      <!-- Secondary Property -->
       <div id="compare-secondary" class="compare-column">
         <h2 class="compare-column-title">Second Property</h2>
         <div id="compare-secondary-content">
@@ -67,8 +55,6 @@
     </div>
     
   </main>
-
-  <!-- External JavaScript File -->
   <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>

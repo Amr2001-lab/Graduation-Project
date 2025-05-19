@@ -12,7 +12,6 @@
         referrerpolicy="no-referrer" />
 </head>
 <body>
-  <!-- Header -->
   <header>
     <div class="header-container">
       <div class="logo">
@@ -20,8 +19,7 @@
           <img src="storage/Images/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg" alt="Real Estate Logo">
         </a>
       </div>
-  
-      <!-- Main Navigation with left section only -->
+
       <nav class="main-nav">
         <ul class="nav-left">
           <li><a href="/buy">Buy</a></li>
@@ -32,10 +30,6 @@
       </nav>
     </div>
   </header>
-  
-  
-
-  <!-- Main Content: Registration Form -->
   <main class="container" style="padding: 40px 0;">
     <div class="auth-form">
       <h2>Sign Up</h2>
@@ -72,8 +66,6 @@
       <p>Already have an account? <a href="{{ route('login.show') }}">Login</a></p>
     </div>
   </main>
-
-  <!-- Footer -->
   <footer>
     <div class="container">
       <p>&copy; {{ date('Y') }} Real Estate Listings. All Rights Reserved.</p>
