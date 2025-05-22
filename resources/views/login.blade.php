@@ -23,7 +23,6 @@
 
       <nav class="main-nav">
         <ul class="nav-left">
-          <li><a href="{{ route('search.index') }}"><i class="fa-solid fa-magnifying-glass"></i> Search</a></li>
           @auth
             <li><a href="{{ route('property.create') }}"><i class="fa-solid fa-plus-circle"></i> Add Listing</a></li>
           @endauth

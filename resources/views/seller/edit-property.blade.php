@@ -19,29 +19,9 @@
           <img src="https://www.creativefabrica.com/wp-content/uploads/2021/03/15/blue-real-estate-logo-Graphics-9602598-1-1-580x387.jpg" alt="Logo">
         </a>
       </div>
-      <nav class="main-nav">
-        <ul class="nav-left">
-          <li><a href="/buy">Buy</a></li>
-          <li><a href="/rent">Rent</a></li>
-          <li><a href="/sell">Sell</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-        <ul class="nav-right">
-          @auth
-            <li><a href="{{ route('property.create') }}" class="nav-btn">List New Property</a></li>
-            <li>
-              <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button class="nav-btn">Logout</button>
-              </form>
-            </li>
-          @endauth
-        </ul>
-      </nav>
     </div>
   </header>
 
-  {{-- ---------- Page Title ---------- --}}
   <section style="padding:40px 0 10px;text-align:center;">
     <h1 style="font-size:2rem;font-weight:700;margin:0;">Edit Property Listing</h1>
   </section>

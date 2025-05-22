@@ -11,7 +11,16 @@ body {
   background: #f4f4f4;
   color: #333;
   line-height: 1.6;
+  min-height: 100vh;              /* added */
+  display: flex;                  /* added */
+  flex-direction: column;         /* added */
 }
+
+main.container {
+  flex: 1;
+}
+
+
 .container {
   width: 90%;
   max-width: 1200px;

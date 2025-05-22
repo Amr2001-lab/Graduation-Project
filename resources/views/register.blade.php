@@ -20,14 +20,6 @@
         </a>
       </div>
 
-      <nav class="main-nav">
-        <ul class="nav-left">
-          <li><a href="/buy">Buy</a></li>
-          <li><a href="/rent">Rent</a></li>
-          <li><a href="/sell">Sell</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </nav>
     </div>
   </header>
   <main class="container" style="padding: 40px 0;">
