@@ -21,3 +21,11 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+# --- allow sample images to be committed ---
+!storage/app/
+!storage/app/public/
+!storage/app/public/Images/
+!storage/app/public/Images/**
+# -------------------------------------------
+
+
