@@ -27,5 +27,16 @@ yarn-error.log
 !storage/app/public/Images/
 !storage/app/public/Images/**
 # -------------------------------------------
+# --- allow images in public/storage/Images to be committed ---
+!public/storage/
+!public/storage/Images/
+!public/storage/Images/**
+# ------------------------------------------------------------
+# --- allow public/tours to be committed ---
+!public/tours/
+!public/tours/**
+# ------------------------------------------
 
-
+!public/                
+!public/tours/
+!public/tours/**
