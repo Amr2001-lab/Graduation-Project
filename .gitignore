@@ -1,6 +1,9 @@
 /.phpunit.cache
-#/node_modules
+/node_modules
 /public/build
+!public/
+!public/tours/
+!public/tours/**
 /public/hot
 /public/storage
 /storage/*.key
@@ -21,22 +24,14 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-# --- allow sample images to be committed ---
+
+# --- allow sample images in storage/app/public/Images to be committed ---
 !storage/app/
 !storage/app/public/
 !storage/app/public/Images/
 !storage/app/public/Images/**
-# -------------------------------------------
+
 # --- allow images in public/storage/Images to be committed ---
 !public/storage/
 !public/storage/Images/
 !public/storage/Images/**
-# ------------------------------------------------------------
-# --- allow public/tours to be committed ---
-!public/tours/
-!public/tours/**
-# ------------------------------------------
-
-!public/                
-!public/tours/
-!public/tours/**
