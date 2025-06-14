@@ -21,10 +21,6 @@
       </div>
       <nav class="main-nav" role="navigation">
         <ul class="nav-left">
-          <li><a href="/buy">Buy</a></li>
-          <li><a href="/rent">Rent</a></li>
-          <li><a href="/sell">Sell</a></li>
-          <li><a href="/contact">Contact</a></li>
         </ul>
         <ul class="nav-right">
           @auth
