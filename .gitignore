@@ -1,14 +1,11 @@
+# Standard Laravel/PHP ignores
 /.phpunit.cache
 /node_modules
 /public/build
-!public/
-!public/tours/
-!public/tours/**
 /public/hot
-/public/storage
 /storage/*.key
 /storage/pail
-#/vendor
+/vendor
 .env
 .env.backup
 .env.production
@@ -19,19 +16,30 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /auth.json
+
+# IDE and editor folders
 /.fleet
 /.idea
 /.nova
 /.vscode
 /.zed
 
-# --- allow sample images in storage/app/public/Images to be committed ---
-!storage/app/
-!storage/app/public/
-!storage/app/public/Images/
-!storage/app/public/Images/**
+# --- CORRECTED RULES ---
 
-# --- allow images in public/storage/Images to be committed ---
-!public/storage/
-!public/storage/Images/
-!public/storage/Images/**
+# Ignore the *contents* of storage/app/public, but not the directory itself
+/storage/app/public/*
+
+# Now, un-ignore the specific Images folder inside it
+!/storage/app/public/Images/
+
+# ---
+
+# Ignore the *contents* of public/storage, but not the directory itself
+# This is the most common place for symlinked assets.
+/public/storage/*
+
+# Now, un-ignore the specific Images folder inside it
+!/public/storage/Images/
+
+# Keep the .gitignore file in the public/storage directory, which is a common practice
+!/public/storage/.gitignore
