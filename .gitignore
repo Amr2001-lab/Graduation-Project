@@ -1,11 +1,12 @@
-# Standard Laravel/PHP ignores
+############################
+#  Standard Laravel / PHP  #
+############################
 /.phpunit.cache
 /node_modules
 /public/build
 /public/hot
 /storage/*.key
 /storage/pail
-/vendor
 .env
 .env.backup
 .env.production
@@ -17,29 +18,39 @@ npm-debug.log
 yarn-error.log
 /auth.json
 
-# IDE and editor folders
+############################
+#      IDE / Editor        #
+############################
 /.fleet
 /.idea
 /.nova
 /.vscode
 /.zed
 
-# --- CORRECTED RULES ---
+############################################################
+#  STORAGE RULES — keep Images but ignore everything else  #
+############################################################
 
-# Ignore the *contents* of storage/app/public, but not the directory itself
+# 1) Ignore *everything* under storage/app/public …
 /storage/app/public/*
 
-# Now, un-ignore the specific Images folder inside it
+# 2) …except the Images folder and its contents
 !/storage/app/public/Images/
+!/storage/app/public/Images/**
 
-# ---
+# 3) Always keep the placeholder .gitignore in that directory
+!/storage/app/public/.gitignore
 
-# Ignore the *contents* of public/storage, but not the directory itself
-# This is the most common place for symlinked assets.
+############################################################
+#  PUBLIC/STORAGE RULES — same idea for the symlink target #
+############################################################
+
+# 1) Ignore everything inside public/storage …
 /public/storage/*
 
-# Now, un-ignore the specific Images folder inside it
+# 2) …except its Images folder
 !/public/storage/Images/
+!/public/storage/Images/**
 
-# Keep the .gitignore file in the public/storage directory, which is a common practice
+# 3) Keep the placeholder .gitignore too
 !/public/storage/.gitignore
