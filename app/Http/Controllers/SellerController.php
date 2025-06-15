@@ -16,35 +16,6 @@ class SellerController extends Controller
         return view('seller.edit-property', compact('apartment'));
     }
 
-    public function update(Request $request, Apartment $apartment)
-    {
-        $validatedData = $request->validate([
-            'city' => 'required|string|max:255',
-            'street' => 'required|string|max:255',
-            'size' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'age' => 'required|integer|min:0',
-            'rooms' => 'required|integer|min:1',
-            'bathrooms' => 'required|integer|min:1',
-            'phone' => 'nullable|string|max:20',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        if($request->hasFile('images'))
-        {
-            foreach($request->file('images') as $image)
-            {
-                $imageName =  $image->getClientOriginalName();
-                $image->storeAs('Images', $imageName, 'public');
-                ApartmentImage::create([
-                    'apartment_id' => $apartment->id,
-                    'image_url' => $imageName,
-                ]);
-            }
-        }
-
-        return redirect()->route('property.show', $apartment->id)->with('success', 'Property updated successfully');
-    }
 
     public function destroyImage(ApartmentImage $image)
     {
