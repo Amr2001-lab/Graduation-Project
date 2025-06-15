@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,7 @@
             <li><a href="<?php echo e(route('estimate')); ?>" class="nav-btn">Estimate Property</a></li>
             <li class="user-dropdown">
               <span class="welcome-msg">
-                Welcome, <?php echo e(Auth::user()->name); ?> <i class="fas fa-caret-down"></i>
+                Welcome, <?php echo e(Auth::user()->name); ?> <i class="fa-solid fa-caret-down"></i>
               </span>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo e(route('profile.show')); ?>" class="nav-btn">Profile</a></li>
@@ -102,10 +101,10 @@
         <h2><?php echo e($property->city); ?> Apartment Details</h2>
         <div class="key-info">
           <span><i class="fa-solid fa-ruler"></i> <?php echo e($property->size); ?> sq ft</span>
-          <span><i class="fas fa-map-marker-alt"></i> <?php echo e($property->street); ?></span>
-          <span><i class="fas fa-calendar-alt"></i> <?php echo e($property->age); ?> years</span>
-          <span><i class="fas fa-bed"></i> <?php echo e($property->rooms); ?> Rooms</span>
-          <span><i class="fas fa-bath"></i> <?php echo e($property->bathrooms); ?> Bathrooms</span>
+          <span><i class="fa-solid fa-location-dot"></i> <?php echo e($property->street); ?></span>
+          <span><i class="fa-solid fa-calendar-days"></i> <?php echo e($property->age); ?> years</span>
+          <span><i class="fa-solid fa-bed"></i> <?php echo e($property->rooms); ?> Rooms</span>
+          <span><i class="fa-solid fa-bath"></i> <?php echo e($property->bathrooms); ?> Bathrooms</span>
         </div>
         <p class="exact-date">Posted on: <?php echo e($property->created_at->format('F j, Y')); ?></p>
       </div>
@@ -205,4 +204,4 @@ I am interested in property ID: <?php echo e($property->id); ?>. Please provide 
   
 </body>
 </html>
-```<?php /**PATH C:\xampp\htdocs\fresh_start\firstwebsite\resources\views/property/show.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\fresh_start\firstwebsite\resources\views/property/show.blade.php ENDPATH**/ ?>
