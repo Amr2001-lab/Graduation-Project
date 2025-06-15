@@ -16,7 +16,6 @@ class SellerController extends Controller
         return view('seller.edit-property', compact('apartment'));
     }
 
-
     public function destroyImage(ApartmentImage $image)
     {
         if(Storage::exists('public/Images/' . $image->image_url))
