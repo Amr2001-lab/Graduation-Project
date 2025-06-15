@@ -30,17 +30,6 @@ class SellerController extends Controller
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $apartment->update([
-            'city' => $validatedData['city'],
-            'street' => $validatedData['street'],
-            'size' => $validatedData['size'],
-            'price' => $validatedData['price'],
-            'age' => $validatedData['age'],
-            'rooms' => $validatedData['rooms'],
-            'bathrooms' => $validatedData['bathrooms'],
-            'phone' => $validatedData['phone'],
-        ]);
-
         if($request->hasFile('images'))
         {
             foreach($request->file('images') as $image)

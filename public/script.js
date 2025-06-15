@@ -60,7 +60,8 @@
 
   for (const type in window.flashMessages) {
     if (!Object.prototype.hasOwnProperty.call(window.flashMessages, type)) continue;
-    const message = window.flashMessages[type];`  `
+    const message = window.flashMessages[type];
+
 
     if (message === updateMsg && onEdit) continue;
 
@@ -353,8 +354,6 @@
       pagination: { el: '.swiper-pagination', clickable: true },
       thumbs: { swiper: thumbs },
       autoplay: { delay: 5000, disableOnInteraction: false },
-      noSwiping: true,
-      noSwipingClass: 'swiper-no-swiping'
     });
 
     topSwiper.on('slideChange', () => {

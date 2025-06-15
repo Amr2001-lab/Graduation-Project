@@ -26,7 +26,7 @@
             <li><a href="{{ route('estimate') }}" class="nav-btn">Estimate Property</a></li>
             <li class="user-dropdown">
               <span class="welcome-msg">
-                Welcome, {{ Auth::user()->name }} <i class="fa-solid fa-caret-down"></i>
+                Welcome, {{ Auth::user()->name }} <i class="fas fa-caret-down"></i>
               </span>
               <ul class="dropdown-menu">
                 <li><a href="{{ route('profile.show') }}" class="nav-btn">Profile</a></li>
@@ -101,10 +101,10 @@
         <h2>{{ $property->city }} Apartment Details</h2>
         <div class="key-info">
           <span><i class="fa-solid fa-ruler"></i> {{ $property->size }} sq ft</span>
-          <span><i class="fa-solid fa-location-dot"></i> {{ $property->street }}</span>
-          <span><i class="fa-solid fa-calendar-days"></i> {{ $property->age }} years</span>
-          <span><i class="fa-solid fa-bed"></i> {{ $property->rooms }} Rooms</span>
-          <span><i class="fa-solid fa-bath"></i> {{ $property->bathrooms }} Bathrooms</span>
+          <span><i class="fas fa-map-marker-alt"></i> {{ $property->street }}</span>
+          <span><i class="fas fa-calendar-alt"></i> {{ $property->age }} years</span>
+          <span><i class="fas fa-bed"></i> {{ $property->rooms }} Rooms</span>
+          <span><i class="fas fa-bath"></i> {{ $property->bathrooms }} Bathrooms</span>
         </div>
         <p class="exact-date">Posted on: {{ $property->created_at->format('F j, Y') }}</p>
       </div>
@@ -204,3 +204,4 @@ I am interested in property ID: {{ $property->id }}. Please provide more informa
   
 </body>
 </html>
+```
